@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Transactions: Identifiable {
     let id: UUID = .init()
+    let Colour: Color = .red
     var title: String
     var classification: String
     var amount: Double
@@ -24,7 +25,7 @@ struct Transactions: Identifiable {
     }
     
     var colour: Color {
-        return colours.first(where: {$0.colours == assignColour})?.value ?? appColour
+        return colours.first(where: {$0.colours == assignColour})?.value ?? Colour
     }
 }
 

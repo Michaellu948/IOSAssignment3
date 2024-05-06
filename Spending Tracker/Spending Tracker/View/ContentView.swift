@@ -11,10 +11,10 @@ struct ContentView: View {
     @State private var currentTab: Tabs = .home
     var body: some View {
         TabView(selection: $currentTab) {
-            Text("Home").tabItem { Tabs.home.tabContent }.tag(Tabs.home)
-            Text("Search").tabItem { Tabs.search.tabContent }.tag(Tabs.search)
-            Text("Trends").tabItem { Tabs.trends.tabContent }.tag(Tabs.trends)
-            Text("Settings").tabItem { Tabs.settings.tabContent }.tag(Tabs.settings)
+            HomeView().tabItem { Tabs.home.tabContent }.tag(Tabs.home)
+            SearchView().tabItem { Tabs.search.tabContent }.tag(Tabs.search)
+            TrendsView().tabItem { Tabs.trends.tabContent }.tag(Tabs.trends)
+            SettingsView().tabItem { Tabs.settings.tabContent }.tag(Tabs.settings)
         }
     }
 }

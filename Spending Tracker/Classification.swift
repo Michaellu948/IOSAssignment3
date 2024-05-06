@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Classification: String {
+enum Classification: String, CaseIterable {
     case income = "Income"
     case expense = "Expense"
 }
