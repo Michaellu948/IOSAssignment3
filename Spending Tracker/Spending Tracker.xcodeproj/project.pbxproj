@@ -14,6 +14,7 @@
 		4C4D657F2BE886C200753FB5 /* Spending_TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D657E2BE886C200753FB5 /* Spending_TrackerTests.swift */; };
 		4C4D65892BE886C200753FB5 /* Spending_TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65882BE886C200753FB5 /* Spending_TrackerUITests.swift */; };
 		4C4D658B2BE886C200753FB5 /* Spending_TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D658A2BE886C200753FB5 /* Spending_TrackerUITestsLaunchTests.swift */; };
+		4C4D659C2BE8D38300753FB5 /* Tabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D659B2BE8D38300753FB5 /* Tabs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		4C4D65842BE886C200753FB5 /* Spending TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spending TrackerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4D65882BE886C200753FB5 /* Spending_TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spending_TrackerUITests.swift; sourceTree = "<group>"; };
 		4C4D658A2BE886C200753FB5 /* Spending_TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spending_TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		4C4D659B2BE8D38300753FB5 /* Tabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabs.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,8 @@
 		4C4D656C2BE886BD00753FB5 /* Spending Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				4C4D65982BE8D2C200753FB5 /* View */,
+				4C4D65972BE8D2B100753FB5 /* Model */,
 				4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */,
 				4C4D656F2BE886BD00753FB5 /* ContentView.swift */,
 				4C4D65712BE886C100753FB5 /* Assets.xcassets */,
@@ -125,6 +129,21 @@
 				4C4D658A2BE886C200753FB5 /* Spending_TrackerUITestsLaunchTests.swift */,
 			);
 			path = "Spending TrackerUITests";
+			sourceTree = "<group>";
+		};
+		4C4D65972BE8D2B100753FB5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4C4D659B2BE8D38300753FB5 /* Tabs.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4C4D65982BE8D2C200753FB5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,6 +278,7 @@
 			files = (
 				4C4D65702BE886BD00753FB5 /* ContentView.swift in Sources */,
 				4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */,
+				4C4D659C2BE8D38300753FB5 /* Tabs.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
