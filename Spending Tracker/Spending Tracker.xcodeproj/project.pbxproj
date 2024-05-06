@@ -25,6 +25,7 @@
 		4C4D65B82BE8F35400753FB5 /* Views+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */; };
 		4C4D65BA2BE8F85100753FB5 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B92BE8F85100753FB5 /* Date+Extensions.swift */; };
 		4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65BC2BE8FA6000753FB5 /* CardView.swift */; };
+		4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		4C4D65B92BE8F85100753FB5 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Date+Extensions.swift"; path = "../../../Date+Extensions.swift"; sourceTree = "<group>"; };
 		4C4D65BC2BE8FA6000753FB5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = SOURCE_ROOT; };
+		4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCardView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				4C4D65BC2BE8FA6000753FB5 /* CardView.swift */,
+				4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				4C4D659C2BE8D38300753FB5 /* Tabs.swift in Sources */,
 				4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */,
 				4C4D65AF2BE8E3AD00753FB5 /* HomeView.swift in Sources */,
+				4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */,
 				4C4D65AA2BE8DE8F00753FB5 /* AssignColour.swift in Sources */,
 				4C4D65A82BE8DC2500753FB5 /* Classification.swift in Sources */,
 				4C4D65B82BE8F35400753FB5 /* Views+Extensions.swift in Sources */,

@@ -11,7 +11,9 @@ struct HomeView: View {
     @AppStorage("userName") private var userName: String = ""
     @State private var startDate: Date = .now.startOfMonth
     @State private var endDate: Date = .now.endOfMonth
-
+    @State private var selectedCategory: Classification = .expense
+    @Namespace private var animation
+    
     var body: some View {
         GeometryReader {
             let size = $0.size
@@ -28,6 +30,12 @@ struct HomeView: View {
                             .hSpacing(.leading)
                             
                             CardView(income: 2038, expense: 4098)
+                            
+                            CustomSegmentedControl()
+                            
+                            ForEach(sampleTransactions) { transaction in
+                                TransactionsCardView(transactions: transaction)
+                            }
                         } header: {
                             HeaderView(size)
                         }
@@ -84,6 +92,32 @@ struct HomeView: View {
             .padding(.horizontal, -15)
             .padding(.top, -(safeArea.top + 15))
         }
+    }
+    
+    @ViewBuilder
+    func CustomSegmentedControl() -> some View {
+        HStack(spacing: 0) {
+            ForEach(Classification.allCases, id: \.rawValue) { classification in
+                Text(classification.rawValue)
+                    .hSpacing()
+                    .padding(.vertical, 10)
+                    .background {
+                        if classification == selectedCategory {
+                            Capsule()
+                                .fill(.background)
+                                .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
+                        }
+                    }
+                    .contentShape(.capsule)
+                    .onTapGesture {
+                        withAnimation(.snappy) {
+                            selectedCategory = classification
+                        }
+                    }
+            }
+        }
+        .background(.gray.opacity(0.15), in: .capsule)
+        .padding(.top, 5)
     }
     
     func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
