@@ -13,14 +13,18 @@ struct Transactions: Identifiable {
     var classification: String
     var amount: Double
     var dataAdded: Date
-    var randomColour: String
+    var assignColour: String
     
-    init(title: String, classification: Classification, amount: Double, dataAdded: Date, randomColour: String) {
+    init(title: String, classification: Classification, amount: Double, dataAdded: Date, assignColour: AssignColour) {
         self.title = title
         self.classification = classification.rawValue
         self.amount = amount
         self.dataAdded = dataAdded
-        self.randomColour = randomColour
+        self.assignColour = assignColour.colours
+    }
+    
+    var colour: Color {
+        return colours.first(where: {$0.colours == assignColour})?.value ?? appColour
     }
 }
 
