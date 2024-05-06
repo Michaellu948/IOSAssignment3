@@ -32,8 +32,9 @@ struct HomeView: View {
                             CardView(income: 2038, expense: 4098)
                             
                             CustomSegmentedControl()
+                                .padding(.bottom, 10)
                             
-                            ForEach(sampleTransactions) { transaction in
+                            ForEach(sampleTransactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
                                 TransactionsCardView(transactions: transaction)
                             }
                         } header: {
