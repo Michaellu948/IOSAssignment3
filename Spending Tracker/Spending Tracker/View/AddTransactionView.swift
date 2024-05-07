@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddTransactionView: View {
     @State private var title: String = ""
-    @State private var description: String = ""
+    @State private var remarks: String = ""
     @State private var amount: Double = .zero
     @State private var dateAdded: Date = .now
     @State private var classification: Classification = .expense
@@ -22,11 +22,11 @@ struct AddTransactionView: View {
                     .font(.caption)
                     .foregroundStyle(.gray)
                     .hSpacing(.leading)
-                TransactionsCardView(transactions: .init(title: title.isEmpty ? "Title" : title, description: description.isEmpty ? "Description" : description, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
+                TransactionsCardView(transactions: .init(title: title.isEmpty ? "Title" : title, remarks: remarks.isEmpty ? "Description" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
                 
                 CustomSection("Title", "Enter title here", value: $title)
                 
-                CustomSection("Description", "Enter description here", value: $description)
+                CustomSection("Description", "Enter description here", value: $remarks)
                 
                 VStack(alignment: .leading, spacing: 10, content: {
                     Text("Amount and Classification")

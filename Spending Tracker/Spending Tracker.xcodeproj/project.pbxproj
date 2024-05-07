@@ -27,6 +27,7 @@
 		4C4D65BA2BE8F85100753FB5 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B92BE8F85100753FB5 /* Date+Extensions.swift */; };
 		4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65BC2BE8FA6000753FB5 /* CardView.swift */; };
 		4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */; };
+		4CFE8C3F2BEA1FCD00BEEB1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE8C3E2BEA1FCD00BEEB1C /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		4C4D65B92BE8F85100753FB5 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Date+Extensions.swift"; path = "../../../Date+Extensions.swift"; sourceTree = "<group>"; };
 		4C4D65BC2BE8FA6000753FB5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = SOURCE_ROOT; };
 		4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCardView.swift; sourceTree = SOURCE_ROOT; };
+		4CFE8C3E2BEA1FCD00BEEB1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 			children = (
 				4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */,
 				4C4D65B92BE8F85100753FB5 /* Date+Extensions.swift */,
+				4CFE8C3E2BEA1FCD00BEEB1C /* Constants.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */,
 				4C4D65BA2BE8F85100753FB5 /* Date+Extensions.swift in Sources */,
 				4C4D659C2BE8D38300753FB5 /* Tabs.swift in Sources */,
+				4CFE8C3F2BEA1FCD00BEEB1C /* Constants.swift in Sources */,
 				4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */,
 				4C4D65AF2BE8E3AD00753FB5 /* HomeView.swift in Sources */,
 				110C65932BE9F7B200E59ADD /* AddTransactionView.swift in Sources */,

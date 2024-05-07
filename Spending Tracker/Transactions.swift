@@ -10,18 +10,17 @@ import SwiftData
 
 @Model
 class Transactions{
-    var color: Color = .red
     var title: String
-    var description: String
+    var remarks: String
     var amount: Double
     var dateAdded: Date
     var classification: String
     var assignColour: String
 
     
-    init(title: String, description: String, amount: Double, dateAdded: Date, classification: Classification, assignColour: AssignColour) {
+    init(title: String, remarks: String, amount: Double, dateAdded: Date, classification: Classification, assignColour: AssignColour) {
         self.title = title
-        self.description = description
+        self.remarks = remarks
         self.classification = classification.rawValue
         self.amount = amount
         self.dateAdded = dateAdded
@@ -29,7 +28,7 @@ class Transactions{
     }
     
     var colour: Color {
-        return colours.first(where: {$0.colours == assignColour})?.value ?? color
+        return colours.first(where: {$0.colours == assignColour})?.value ?? appTint
     }
 }
 

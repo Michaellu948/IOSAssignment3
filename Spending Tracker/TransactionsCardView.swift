@@ -16,13 +16,13 @@ struct TransactionsCardView: View {
                 .fontWeight(.semibold)
                 .frame(width:45, height: 45)
                 .foregroundStyle(.white)
-                .background(transactions.color.gradient, in: .circle)
+                .background(transactions.colour.gradient, in: .circle)
             
             VStack(alignment: .leading, spacing: 4, content: {
                 Text(transactions.title)
                     .foregroundStyle(Color.primary)
                 
-                Text(transactions.description)
+                Text(transactions.remarks)
                     .font(.caption)
                     .foregroundStyle(Color.primary.secondary)
                 
