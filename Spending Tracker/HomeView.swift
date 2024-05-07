@@ -34,9 +34,7 @@ struct HomeView: View {
                             CustomSegmentedControl()
                                 .padding(.bottom, 10)
                             
-                            ForEach(sampleTransactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
-                                TransactionsCardView(transactions: transaction)
-                            }
+                            //TransactionsCardView(transactions: transaction)
                         } header: {
                             HeaderView(size)
                         }
@@ -66,7 +64,7 @@ struct HomeView: View {
             }
             Spacer(minLength: 0)
             NavigationLink {
-                
+                AddTransactionView()
             } label: {
                 Image(systemName: "plus")
                     .font(.title3)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		110C65932BE9F7B200E59ADD /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C65922BE9F7B200E59ADD /* AddTransactionView.swift */; };
 		4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */; };
 		4C4D65702BE886BD00753FB5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D656F2BE886BD00753FB5 /* ContentView.swift */; };
 		4C4D65722BE886C100753FB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C4D65712BE886C100753FB5 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		110C65922BE9F7B200E59ADD /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
 		4C4D656A2BE886BD00753FB5 /* Spending Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spending Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spending_TrackerApp.swift; sourceTree = "<group>"; };
 		4C4D656F2BE886BD00753FB5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				4C4D65B02BE8E3C400753FB5 /* SearchView.swift */,
 				4C4D65B22BE8E3DA00753FB5 /* TrendsView.swift */,
 				4C4D65B42BE8E3EA00753FB5 /* SettingsView.swift */,
+				110C65922BE9F7B200E59ADD /* AddTransactionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				4C4D659C2BE8D38300753FB5 /* Tabs.swift in Sources */,
 				4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */,
 				4C4D65AF2BE8E3AD00753FB5 /* HomeView.swift in Sources */,
+				110C65932BE9F7B200E59ADD /* AddTransactionView.swift in Sources */,
 				4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */,
 				4C4D65AA2BE8DE8F00753FB5 /* AssignColour.swift in Sources */,
 				4C4D65A82BE8DC2500753FB5 /* Classification.swift in Sources */,
