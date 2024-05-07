@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct AddTransactionView: View {
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    var editTransaction: Transactions?
+    
     @State private var title: String = ""
     @State private var remarks: String = ""
     @State private var amount: Double = .zero
     @State private var dateAdded: Date = .now
     @State private var classification: Classification = .expense
-    var assignColour: AssignColour = colours.randomElement()!
+    @State var assignColour: AssignColour = colours.randomElement()!
     
     var body: some View {
         ScrollView(.vertical){
@@ -58,22 +62,64 @@ struct AddTransactionView: View {
                         .padding(.vertical, 12)
                         .background(.background, in: .rect(cornerRadius: 10))
                 }
-            )}
+                )}
             
             .padding()
         }
-        .navigationTitle("Add New Transaction")
+        .navigationTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction")
         .background(.gray.opacity(0.15))
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing){
                 Button("Save", action: saveTransaction)
             }
+            ToolbarItem(placement: .bottomBar) {
+                if editTransaction != nil {
+                    Button("Delete", role: .destructive, action: deleteTransaction)
+                }
+            }
+            
+        })
+        .onAppear(perform: {
+            if let editTransaction{
+                //Load all existing data from transaction
+                title = editTransaction.title
+                remarks = editTransaction.remarks
+                dateAdded = editTransaction.dateAdded
+                if let classification = editTransaction.newClassification{
+                    self.classification = classification
+                    
+                }
+                amount = editTransaction.amount
+                if let assignColour = editTransaction.assignCol{
+                    self.assignColour = assignColour
+                }
+            }
         })
     }
     
     func saveTransaction(){
-        
+        //Save transaction to SwiftData
+        if editTransaction != nil{
+            editTransaction?.title = title
+            editTransaction?.remarks = remarks
+            editTransaction?.amount = amount
+            editTransaction?.classification = classification.rawValue
+            editTransaction?.dateAdded = dateAdded
+            
+        } else{
+            let transaction = Transactions(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour)
+            context.insert(transaction)
+        }
+        dismiss()
     }
+    
+    func deleteTransaction() {
+        if let editTransaction = editTransaction {
+            context.delete(editTransaction)
+            dismiss()
+        }
+    }
+    
     @ViewBuilder
     func CustomSection(_ title: String, _ hint: String, value: Binding<String>) -> some View{
         VStack(alignment: .leading, spacing: 10, content: {
@@ -92,7 +138,7 @@ struct AddTransactionView: View {
     @ViewBuilder
     func ClassficationCheckBox() -> some View{
         HStack(spacing: 10){
-            ForEach(Classification.allCases, id: \.rawValue){ classification in 
+            ForEach(Classification.allCases, id: \.rawValue){ classification in
                 HStack(spacing: 5){
                     ZStack{
                         Image(systemName: "circle")
@@ -120,7 +166,7 @@ struct AddTransactionView: View {
         .hSpacing(.leading)
         .background(.background, in: .rect(cornerRadius: 10))
     }
-
+    
     
     var numberFormatter: NumberFormatter{
         let formatter = NumberFormatter()
@@ -130,9 +176,6 @@ struct AddTransactionView: View {
         return formatter
     }
 }
-
-
-
 
 #Preview {
     NavigationStack{

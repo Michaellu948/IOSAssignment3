@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TransactionsCardView: View {
+    @Environment(\.modelContext) private var context
     var transactions: Transactions
     var body: some View {
         HStack(spacing: 12) {

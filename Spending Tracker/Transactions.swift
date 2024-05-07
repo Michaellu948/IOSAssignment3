@@ -30,6 +30,14 @@ class Transactions{
     var colour: Color {
         return colours.first(where: {$0.colours == assignColour})?.value ?? appTint
     }
+    
+    var assignCol: AssignColour?{
+        return colours.first(where: { $0.colours == assignColour})
+    }
+    
+    var newClassification: Classification? {
+        return Classification.allCases.first(where: {classification == $0.rawValue})
+    }
 }
 
 

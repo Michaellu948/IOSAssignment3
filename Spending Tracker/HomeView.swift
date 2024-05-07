@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     @AppStorage("userName") private var userName: String = ""
@@ -13,7 +14,7 @@ struct HomeView: View {
     @State private var endDate: Date = .now.endOfMonth
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
-    
+    @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)], animation: .snappy) private var transactions: [Transactions]
     var body: some View {
         GeometryReader {
             let size = $0.size
@@ -34,7 +35,15 @@ struct HomeView: View {
                             CustomSegmentedControl()
                                 .padding(.bottom, 10)
                             
-                            //TransactionsCardView(transactions: transaction)
+                            ForEach(transactions) { transaction in
+                                NavigationLink{
+                                    AddTransactionView(editTransaction: transaction)
+                                }label: {
+                                    TransactionsCardView(transactions: transaction)
+                                }
+                                .buttonStyle(.plain)
+                            }
+
                         } header: {
                             HeaderView(size)
                         }
