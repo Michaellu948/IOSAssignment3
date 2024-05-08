@@ -14,7 +14,7 @@ struct HomeView: View {
     @State private var endDate: Date = .now.endOfMonth
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
-    @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)], animation: .snappy) private var transactions: [Transactions]
+
     var body: some View {
         GeometryReader {
             let size = $0.size
@@ -30,19 +30,23 @@ struct HomeView: View {
                             })
                             .hSpacing(.leading)
                             
-                            CardView(income: 2038, expense: 4098)
-                            
-                            CustomSegmentedControl()
-                                .padding(.bottom, 10)
-                            
-                            ForEach(transactions) { transaction in
-                                NavigationLink{
-                                    AddTransactionView(editTransaction: transaction)
-                                }label: {
-                                    TransactionsCardView(transactions: transaction)
+                            FilterTransactionView(startDate: startDate, endDate: endDate){ transactions in
+                                CardView(income: total(transactions, classification: .income),
+                                         expense: total(transactions, classification: .expense))
+                                
+                                CustomSegmentedControl()
+                                    .padding(.bottom, 10)
+                                
+                                ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
+                                    NavigationLink{
+                                        AddTransactionView(editTransaction: transaction)
+                                    }label: {
+                                        TransactionsCardView(transactions: transaction)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
+                            
 
                         } header: {
                             HeaderView(size)
@@ -51,6 +55,9 @@ struct HomeView: View {
                     .padding(15)
                 }
                 .background(.gray.opacity(0.15))
+                .navigationDestination(for: Transactions.self) { transaction in
+                    TransactionsCardView(transactions: transaction)
+                }
 
             }
         }
