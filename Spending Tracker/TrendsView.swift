@@ -7,6 +7,10 @@ struct TrendsView: View {
     private var expenseTransactions: [Transactions] {
         transactions.filter { $0.classification == Classification.expense.rawValue }
     }
+    private var mostExpensiveTransaction: Transactions? {
+            expenseTransactions.max(by: { $0.amount < $1.amount })
+        }
+
 
     var body: some View {
         VStack {
@@ -17,8 +21,14 @@ struct TrendsView: View {
             GeometryReader { geometry in
                 createPieChart(geometry: geometry)
             }
-            .frame(height: 300) // Ensure the pie chart has a fixed height
+            .frame(height: 400)
             .padding()
+            if let mostExpensive = mostExpensiveTransaction {
+                            Text("Your highest expense is on \(mostExpensive.title). Try to manage this category better next time.")
+                                .font(.headline)
+                                .foregroundColor(.red)
+                                .padding()
+                        }
         }
     }
     
@@ -29,7 +39,6 @@ struct TrendsView: View {
 
         let totalAmount = expenseTransactions.reduce(0) { $0 + $1.amount }
         
-        // Generate cumulative angles for each transaction
         let angles = cumulativeAngles(for: expenseTransactions, total: totalAmount)
         
         return ZStack {
@@ -92,8 +101,7 @@ struct PieSliceView: View {
     }
 }
 
-struct TrendsView_Previews: PreviewProvider {
-    static var previews: some View {
-        TrendsView()
-    }
+#Preview{
+    TrendsView()
+    
 }
