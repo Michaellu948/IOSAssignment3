@@ -4,44 +4,91 @@ import SwiftData
 struct TrendsView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
 
-    // This part calculates the total of all transactions for proper pie slice calculations
-    private var total: Double {
-        transactions.reduce(0) { $0 + $1.amount }
-    }
-    
-    private func angleMultiplier(_ transaction: Transactions) -> Double {
-        transaction.amount / total
+    private var expenseTransactions: [Transactions] {
+        transactions.filter { $0.classification == Classification.expense.rawValue }
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            let width = min(geometry.size.width, geometry.size.height)
-            let center = CGPoint(x: width / 2, y: width / 2)
-            let radius = width / 2
-            var startAngle = -CGFloat.pi / 2  // Start from the top of the circle
+        VStack {
+            Text("Expenses Overview")
+                .font(.title)
+                .padding()
 
-            ZStack {
-                ForEach(transactions, id: \.id) { transaction in
-                    Path { path in
-                        let endAngle = startAngle + 2 * .pi * CGFloat(angleMultiplier(transaction))
-                        path.move(to: center)
-                        path.addArc(center: center, radius: radius, startAngle: Angle(radians: Double(startAngle)), endAngle: Angle(radians: Double(endAngle)), clockwise: false)
-                        startAngle = endAngle
-                    }
-                    .fill(self.colorForTransaction(transaction))  // You would need to define this method to choose colors
-                }
+            GeometryReader { geometry in
+                createPieChart(geometry: geometry)
+            }
+            .frame(height: 300) // Ensure the pie chart has a fixed height
+            .padding()
+        }
+    }
+    
+    private func createPieChart(geometry: GeometryProxy) -> some View {
+        let width = min(geometry.size.width, geometry.size.height)
+        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        let radius = width / 3
+
+        let totalAmount = expenseTransactions.reduce(0) { $0 + $1.amount }
+        
+        // Generate cumulative angles for each transaction
+        let angles = cumulativeAngles(for: expenseTransactions, total: totalAmount)
+        
+        return ZStack {
+            ForEach(expenseTransactions.indices, id: \.self) { index in
+                let transaction = expenseTransactions[index]
+                let startAngle = angles[index].start
+                let endAngle = angles[index].end
+                
+                PieSliceView(transaction: transaction, startAngle: startAngle, endAngle: endAngle, center: center, radius: radius)
             }
         }
-        .frame(height: 300)  // Fixed height for the pie chart
-        .padding()
+    }
+    
+    private func cumulativeAngles(for transactions: [Transactions], total: Double) -> [(start: CGFloat, end: CGFloat)] {
+        var angles = [(start: CGFloat, end: CGFloat)]()
+        var startAngle = -CGFloat.pi / 2
+        
+        for transaction in transactions {
+            let endAngle = startAngle + 2 * .pi * CGFloat(transaction.amount / total)
+            angles.append((start: startAngle, end: endAngle))
+            startAngle = endAngle
+        }
+        
+        return angles
+    }
+}
+
+struct PieSliceView: View {
+    var transaction: Transactions
+    var startAngle: CGFloat
+    var endAngle: CGFloat
+    var center: CGPoint
+    var radius: CGFloat
+
+    var body: some View {
+        Path { path in
+            path.move(to: center)
+            path.addArc(center: center, radius: radius, startAngle: Angle(radians: Double(startAngle)), endAngle: Angle(radians: Double(endAngle)), clockwise: false)
+        }
+        .fill(self.colorForTransaction(transaction))
+        .overlay(
+            self.labelPositioned(startAngle: startAngle, endAngle: endAngle, label: transaction.title, center: center, radius: radius)
+        )
     }
 
-    // Example method to choose colors for each transaction
     private func colorForTransaction(_ transaction: Transactions) -> Color {
-        // This is a simple way to assign a color based on the transaction's title hash.
-        // In a real application, you might use a more sophisticated method.
         let colors: [Color] = [.red, .green, .blue, .orange, .purple, .yellow]
-        return colors[transaction.title.hashValue % colors.count]
+        let index = abs(transaction.title.hashValue) % colors.count
+        return colors[index]
+    }
+
+    private func labelPositioned(startAngle: CGFloat, endAngle: CGFloat, label: String, center: CGPoint, radius: CGFloat) -> some View {
+        let midAngle = (startAngle + endAngle) / 2
+        let x = center.x + radius * 0.75 * cos(midAngle)
+        let y = center.y + radius * 0.75 * sin(midAngle)
+
+        return Text(label)
+            .position(x: x, y: y)
+            .foregroundColor(.white)
     }
 }
 
