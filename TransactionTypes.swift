@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-enum TransactionTypes: String {
+enum TransactionTypes: String, CaseIterable, Identifiable {
     case food = "Food"
     case groceries = "Groceries"
     case transport = "Transport"
     case entertainment = "Entertainment"
     case other = "Others"
     
+    var id: String{ self.rawValue }
     @ViewBuilder
     var transactionType: some View {
         switch self {

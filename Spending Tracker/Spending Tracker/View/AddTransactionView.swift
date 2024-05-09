@@ -12,6 +12,7 @@ struct AddTransactionView: View {
     @Environment(\.dismiss) private var dismiss
     var editTransaction: Transactions?
     
+    @State private var selectedType: TransactionTypes = .food
     @State private var title: String = ""
     @State private var remarks: String = ""
     @State private var amount: Double = .zero
@@ -26,9 +27,34 @@ struct AddTransactionView: View {
                     .font(.caption)
                     .foregroundStyle(.gray)
                     .hSpacing(.leading)
-                TransactionsCardView(transactions: .init(title: title.isEmpty ? "Title" : title, remarks: remarks.isEmpty ? "Description" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
+                TransactionsCardView(transactions: .init(title: title.isEmpty ? selectedType.rawValue : title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
                 
-                CustomSection("Title", "Enter title here", value: $title)
+                VStack(alignment: .leading, spacing: 10){
+                    Text("Category")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 15)
+                    /*
+                    Picker("Select Category", selection: $selectedType) {
+                        ForEach(TransactionTypes.allCases, id: \.self) { type in
+                            HStack {
+                                type.transactionType // This uses the ViewBuilder in your enum
+                            }
+                            .tag(type)
+                        }
+                    }
+                    .pickerStyle(.wheel) // You can choose .segmented, .wheel, etc., based on your design preference
+                    .frame(height: 150)
+                    .clipped()
+                    .padding(.horizontal, 15)
+                    .background(Color(UIColor.systemBackground))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    .padding(.vertical, 10)
+                    .onChange(of: selectedType){ newValue in
+                        title = newValue.rawValue
+                    }*/
+                }
                 
                 CustomSection("Description", "Enter description here", value: $remarks)
                 
@@ -37,7 +63,7 @@ struct AddTransactionView: View {
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacing(.leading)
-                   
+                    
                     
                     HStack(spacing: 15){
                         TextField("0.0", value: $amount, formatter: numberFormatter)
