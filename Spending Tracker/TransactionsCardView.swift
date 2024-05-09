@@ -12,7 +12,7 @@ struct TransactionsCardView: View {
     var transactions: Transactions
     var body: some View {
         HStack(spacing: 12) {
-            Text("\(String(transactions.title.prefix(1)))")
+            Text("\(String(transactions.remarks.prefix(1)))")
                 .font(.title)
                 .fontWeight(.semibold)
                 .frame(width:45, height: 45)
@@ -20,10 +20,10 @@ struct TransactionsCardView: View {
                 .background(transactions.colour.gradient, in: .circle)
             
             VStack(alignment: .leading, spacing: 4, content: {
-                Text(transactions.title)
+                Text(transactions.remarks)
                     .foregroundStyle(Color.primary)
                 
-                Text(transactions.remarks)
+                Text(transactions.title)
                     .font(.caption)
                     .foregroundStyle(Color.primary.secondary)
                 
