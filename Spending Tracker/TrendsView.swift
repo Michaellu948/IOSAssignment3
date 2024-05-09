@@ -13,9 +13,15 @@ struct TrendsView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
     @State private var chartData: [ChartModel] = []
     
-        var body: some View {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+         var body: some View {
+        PieChart {
+            ForEach(transactions) { transaction in
+                PieChartSlice(value: transactions.amount, label: Text(transactions.title), legend: Text(transactions.title))
+            }
         }
+        .frame(height: 300)
+        .padding()
+    }
     
 
     
