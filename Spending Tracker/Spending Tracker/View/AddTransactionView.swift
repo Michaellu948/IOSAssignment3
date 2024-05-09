@@ -4,14 +4,13 @@
 //
 //  Created by JohnTSS on 7/5/2024.
 //
-
 import SwiftUI
 
 struct AddTransactionView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     var editTransaction: Transactions?
-    
+
     @State private var selectedType: TransactionTypes = .food
     @State private var title: String = ""
     @State private var remarks: String = ""
@@ -19,107 +18,76 @@ struct AddTransactionView: View {
     @State private var dateAdded: Date = .now
     @State private var classification: Classification = .expense
     @State var assignColour: AssignColour = colours.randomElement()!
-    
+
     var body: some View {
-        ScrollView(.vertical){
-            VStack(spacing: 15){
-                Text("Preview")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-                    .hSpacing(.leading)
-                TransactionsCardView(transactions: .init(title: title.isEmpty ? selectedType.rawValue : title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
+        NavigationView {
+            Form {
+                // Add Transaction Card Preview Section
+                Section(header: Text("Preview")) {
+                    TransactionsCardView(transactions: .init(title: title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
+                }
                 
-                VStack(alignment: .leading, spacing: 10){
-                    Text("Category")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal, 15)
-                    
-                    Picker("Select Category", selection: $selectedType) {
+                Section(header: Text("Transaction Details").foregroundColor(.secondary)) {
+                    Picker("Category", selection: $selectedType) {
                         ForEach(TransactionTypes.allCases, id: \.self) { type in
-                            HStack {
-                                type.transactionType // This uses the ViewBuilder in your enum
-                            }
-                            .tag(type)
+                            HStack{
+                                type.transactionIcon
+                                Text(type.rawValue)
+                            }.tag(type)
                         }
                     }
-                    .pickerStyle(.wheel) // You can choose .segmented, .wheel, etc., based on your design preference
-                    .frame(height: 150)
-                    .clipped()
-                    .padding(.horizontal, 15)
-                    .background(Color(UIColor.systemBackground))
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
-                    .padding(.vertical, 10)
+                    .pickerStyle(.automatic)
                     .onChange(of: selectedType){ newValue in
                         title = newValue.rawValue
                     }
-                }
-                
-                CustomSection("Description", "Enter description here", value: $remarks)
-                
-                VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Amount and Classification")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .hSpacing(.leading)
+
+                    TextField("Description", text: $remarks)
                     
-                    
-                    HStack(spacing: 15){
-                        TextField("0.0", value: $amount, formatter: numberFormatter)
-                            .padding(.horizontal, 15)
-                            .padding(.vertical, 10)
-                            .background(.background, in: .rect(cornerRadius: 10))
-                            .frame(maxWidth: 150)
-                        
-                        ClassficationCheckBox()
-                        
+                    HStack {
+                        Text("$").foregroundColor(.secondary)
+                        TextField("Amount", value: $amount, formatter: numberFormatter)
+                            .keyboardType(.decimalPad)
                     }
-                })
-                
-                VStack(alignment: .leading, spacing: 10, content: {
-                    Text("Date")
-                        .font(.caption)
-                        .foregroundStyle(.gray)
-                        .hSpacing(.leading)
-                    
-                    DatePicker("", selection: $dateAdded, displayedComponents: [.date])
-                        .datePickerStyle(.graphical)
-                        .padding(.horizontal, 15)
-                        .padding(.vertical, 12)
-                        .background(.background, in: .rect(cornerRadius: 10))
+
+                    DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
                 }
-                )}
-            
-            .padding()
+
+                Section {
+                    ClassificationPicker(classification: $classification)
+                }
+
+                Section {
+                    Button("Save", action: saveTransaction)
+                    if editTransaction != nil {
+                        Button("Delete", role: .destructive, action: deleteTransaction)
+                    }
+                }
+            }
+            .navigationBarTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction", displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+            }
         }
-        .navigationTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction")
-        .background(.gray.opacity(0.15))
-        .toolbar(content: {
-            ToolbarItem(placement: .topBarTrailing){
-                Button("Save", action: saveTransaction)
-            }
-            ToolbarItem(placement: .bottomBar) {
-                if editTransaction != nil {
-                    Button("Delete", role: .destructive, action: deleteTransaction)
-                }
-            }
-            
-        })
-        .onAppear(perform: {
-            if let editTransaction = editTransaction{
-                //Load all existing data from transaction
-                selectedType = TransactionTypes(rawValue: editTransaction.title) ?? .food
-                title = editTransaction.title
-                remarks = editTransaction.remarks
-                dateAdded = editTransaction.dateAdded
-                classification = editTransaction.newClassification ?? .expense
-                amount = editTransaction.amount
-                assignColour = editTransaction.assignCol ?? colours.randomElement()!
-            } else{
-                title = selectedType.rawValue
-            }
-        })
+        .onAppear(perform: loadTransaction)
+    }
+
+    func loadTransaction() {
+        if let editTransaction = editTransaction {
+            // Load existing data
+            selectedType = TransactionTypes(rawValue: editTransaction.title) ?? .food
+            title = editTransaction.title
+            remarks = editTransaction.remarks
+            amount = editTransaction.amount
+            dateAdded = editTransaction.dateAdded
+            classification = editTransaction.newClassification ?? .expense
+            assignColour = editTransaction.assignCol ?? colours.randomElement()!
+        } else{
+            title = selectedType.rawValue
+        }
     }
     
     func saveTransaction(){
@@ -191,7 +159,18 @@ struct AddTransactionView: View {
         .hSpacing(.leading)
         .background(.background, in: .rect(cornerRadius: 10))
     }
-    
+    struct ClassificationPicker: View {
+        @Binding var classification: Classification
+
+        var body: some View {
+            Picker("Classification", selection: $classification) {
+                ForEach(Classification.allCases, id: \.self) { classification in
+                    Text(classification.rawValue).tag(classification)
+                }
+            }
+            .pickerStyle(.segmented)
+        }
+    }
     
     var numberFormatter: NumberFormatter{
         let formatter = NumberFormatter()
@@ -201,7 +180,23 @@ struct AddTransactionView: View {
         return formatter
     }
 }
-
+extension TransactionTypes {
+    @ViewBuilder
+    var transactionIcon: some View {
+        switch self {
+        case .food:
+            Image(systemName: "fork.knife")
+        case .groceries:
+            Image(systemName: "cart")
+        case .transport:
+            Image(systemName: "car")
+        case .entertainment:
+            Image(systemName: "movieclapper")
+        case .other:
+            Image(systemName: "doc.questionmark")
+        }
+    }
+}
 #Preview {
     NavigationStack{
         AddTransactionView()
