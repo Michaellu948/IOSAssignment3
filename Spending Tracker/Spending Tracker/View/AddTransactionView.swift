@@ -34,7 +34,7 @@ struct AddTransactionView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .padding(.horizontal, 15)
-                    /*
+                    
                     Picker("Select Category", selection: $selectedType) {
                         ForEach(TransactionTypes.allCases, id: \.self) { type in
                             HStack {
@@ -53,7 +53,7 @@ struct AddTransactionView: View {
                     .padding(.vertical, 10)
                     .onChange(of: selectedType){ newValue in
                         title = newValue.rawValue
-                    }*/
+                    }
                 }
                 
                 CustomSection("Description", "Enter description here", value: $remarks)
@@ -107,31 +107,29 @@ struct AddTransactionView: View {
             
         })
         .onAppear(perform: {
-            if let editTransaction{
+            if let editTransaction = editTransaction{
                 //Load all existing data from transaction
+                selectedType = TransactionTypes(rawValue: editTransaction.title) ?? .food
                 title = editTransaction.title
                 remarks = editTransaction.remarks
                 dateAdded = editTransaction.dateAdded
-                if let classification = editTransaction.newClassification{
-                    self.classification = classification
-                    
-                }
+                classification = editTransaction.newClassification ?? .expense
                 amount = editTransaction.amount
-                if let assignColour = editTransaction.assignCol{
-                    self.assignColour = assignColour
-                }
+                assignColour = editTransaction.assignCol ?? colours.randomElement()!
+            } else{
+                title = selectedType.rawValue
             }
         })
     }
     
     func saveTransaction(){
         //Save transaction to SwiftData
-        if editTransaction != nil{
-            editTransaction?.title = title
-            editTransaction?.remarks = remarks
-            editTransaction?.amount = amount
-            editTransaction?.classification = classification.rawValue
-            editTransaction?.dateAdded = dateAdded
+        if let editTransaction = editTransaction{
+            editTransaction.title = title
+            editTransaction.remarks = remarks
+            editTransaction.amount = amount
+            editTransaction.classification = classification.rawValue
+            editTransaction.dateAdded = dateAdded
             
         } else{
             let transaction = Transactions(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour)

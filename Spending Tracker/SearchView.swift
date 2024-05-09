@@ -12,6 +12,9 @@ struct SearchView: View {
     @State private var searchTxt: String = ""
     @State private var filterTxt: String = ""
     @State private var selectedclassification: Classification? = nil
+    @State private var isEditingTransaction = false
+    @State private var transactionToEdit: Transactions?
+    
     let searchPublisher = PassthroughSubject<String, Never>()
     var body: some View {
         NavigationStack{
@@ -19,9 +22,10 @@ struct SearchView: View {
                 LazyVStack(spacing: 12){
                     FilterTransactionView(classification: selectedclassification, searchText: filterTxt) { transactions in
                         ForEach(transactions){transaction in
-                            NavigationLink{
-                                AddTransactionView(editTransaction: transaction)
-                            } label: {
+                            Button(action:{
+                                transactionToEdit = transaction
+                                isEditingTransaction = true
+                            }) {
                                 TransactionsCardView(transactions: transaction)
                             }
                             .buttonStyle(.plain)
@@ -31,6 +35,11 @@ struct SearchView: View {
                 }
                 .padding(15)
             }
+            .background(
+                NavigationLink(destination: AddTransactionView(editTransaction: transactionToEdit), isActive: $isEditingTransaction){
+                    EmptyView()
+                }
+            )
             .onChange(of: searchTxt, {oldText, newText in
                 if newText.isEmpty{
                     filterTxt = ""
