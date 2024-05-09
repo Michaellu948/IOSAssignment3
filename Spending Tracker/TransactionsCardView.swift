@@ -36,6 +36,10 @@ struct TransactionsCardView: View {
             
             Text(currencyString(transactions.amount, allowedDigits: 2))
                 .fontWeight(.semibold)
+                .foregroundColor(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Color.blue, in: RoundedRectangle(cornerRadius: 10))
         }
         .padding(.horizontal, 15)
         .padding(.vertical, 10)

@@ -31,10 +31,6 @@ struct SearchView: View {
                 }
                 .padding(15)
             }
-            .overlay(content: {
-                ContentUnavailableView("Search Transactions", systemImage: "magnifyingglass")
-                    .opacity(searchTxt.isEmpty ? 1 : 0)
-            })
             .onChange(of: searchTxt, {oldText, newText in
                 if newText.isEmpty{
                     filterTxt = ""
@@ -44,7 +40,6 @@ struct SearchView: View {
             .onReceive(searchPublisher.debounce(for: .seconds(0.3), scheduler: DispatchQueue.main), perform: { text in filterTxt = text
             })
             .searchable(text: $searchTxt)
-            .navigationTitle("Search")
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
                     ToolBarContent()
