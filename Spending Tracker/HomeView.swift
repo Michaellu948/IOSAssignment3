@@ -14,7 +14,7 @@ struct HomeView: View {
     @State private var endDate: Date = .now.endOfMonth
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
-
+    
     @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)], animation: .snappy) private var transactions: [Transactions]
     
     var body: some View {
@@ -25,6 +25,7 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
                         Section {
+                            
                             Button(action: {}, label: {
                                 Text("\(format(date: startDate, format: "dd - MMM yy")) to \(format(date: startDate, format: "dd - MMM yy"))")
                                     .font(.caption2)
@@ -33,17 +34,17 @@ struct HomeView: View {
                             .hSpacing(.leading)
                             
                             FilterTransactionView(startDate: startDate, endDate: endDate){ transactions in
-                                                            CardView(income: total(transactions, classification: .income),
-                                                                     expense: total(transactions, classification: .expense))
-                                                            
-                                                            CustomSegmentedControl()
-                                                                .padding(.bottom, 10)
-                                                            
-                                                            ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
-                                                                NavigationLink(value: transaction){
-                                                                    TransactionsCardView(transactions: transaction)
-                                                                }
-                                                                .buttonStyle(.plain)
+                                CardView(income: total(transactions, classification: .income),
+                                         expense: total(transactions, classification: .expense))
+                                
+                                CustomSegmentedControl()
+                                    .padding(.bottom, 10)
+                                
+                                ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
+                                    NavigationLink(value: transaction){
+                                        TransactionsCardView(transactions: transaction)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
                             }
                             
@@ -56,7 +57,7 @@ struct HomeView: View {
                 }
                 .background(.gray.opacity(0.15))
                 .navigationDestination(for: Transactions.self) { transaction in
-                    AddTransactionView(editTransaction: transaction)
+                    AddTransactionView(editTransaction : transaction)
                 }
                 
             }
@@ -90,7 +91,7 @@ struct HomeView: View {
                     .background(.blue.gradient, in: .circle)
                     .contentShape(.circle)
             }
-
+            
         }
         .padding(.bottom, userName.isEmpty ? 10 : 5)
         .background {

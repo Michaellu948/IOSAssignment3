@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage("userName") private var userName: String = ""
+    @EnvironmentObject var themeHandler: ThemeHandler
     
     var body: some View {
         NavigationStack{
@@ -16,12 +17,18 @@ struct SettingsView: View {
                 Section("Username"){
                     TextField("Enter your username", text: $userName)
                 }
+                Section(header: Text("Appearance")) {
+                    Toggle(isOn: $themeHandler.isDarkModeEnabled) {
+                        Text("Dark Mode")
+                    }
+                }
+                .navigationTitle("Settings")
             }
-            .navigationTitle("Settings")
+            .preferredColorScheme(themeHandler.isDarkModeEnabled ? .dark : .light)
         }
     }
 }
-
-#Preview {
-    SettingsView()
-}
+    
+    #Preview {
+        SettingsView()
+    }

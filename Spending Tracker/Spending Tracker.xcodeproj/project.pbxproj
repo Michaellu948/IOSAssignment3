@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		110C65932BE9F7B200E59ADD /* AddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C65922BE9F7B200E59ADD /* AddTransactionView.swift */; };
+		11821A262BECAB25001CEFA8 /* ThemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11821A252BECAB25001CEFA8 /* ThemeHandler.swift */; };
 		4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */; };
 		4C4D65702BE886BD00753FB5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D656F2BE886BD00753FB5 /* ContentView.swift */; };
 		4C4D65722BE886C100753FB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C4D65712BE886C100753FB5 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		110C65922BE9F7B200E59ADD /* AddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionView.swift; sourceTree = "<group>"; };
+		11821A252BECAB25001CEFA8 /* ThemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeHandler.swift; sourceTree = "<group>"; };
 		4C4D656A2BE886BD00753FB5 /* Spending Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spending Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spending_TrackerApp.swift; sourceTree = "<group>"; };
 		4C4D656F2BE886BD00753FB5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		4C4D65972BE8D2B100753FB5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				11821A252BECAB25001CEFA8 /* ThemeHandler.swift */,
 				4C4D659B2BE8D38300753FB5 /* Tabs.swift */,
 				4C4D65A72BE8DC2500753FB5 /* Classification.swift */,
 				DB5D58E52BEBF34F000E7E36 /* ChartModel.swift */,
@@ -340,6 +343,7 @@
 				4C4D65B32BE8E3DA00753FB5 /* TrendsView.swift in Sources */,
 				4C4D65A42BE8DA8E00753FB5 /* Transactions.swift in Sources */,
 				4C4D65B12BE8E3C400753FB5 /* SearchView.swift in Sources */,
+				11821A262BECAB25001CEFA8 /* ThemeHandler.swift in Sources */,
 				DB5D58E62BEBF34F000E7E36 /* ChartModel.swift in Sources */,
 				4C4D65702BE886BD00753FB5 /* ContentView.swift in Sources */,
 				4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */,
