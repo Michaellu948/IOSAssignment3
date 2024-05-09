@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct TrendsView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
@@ -40,4 +41,12 @@ struct TrendsView: View {
         // This is a simple way to assign a color based on the transaction's title hash.
         // In a real application, you might use a more sophisticated method.
         let colors: [Color] = [.red, .green, .blue, .orange, .purple, .yellow]
-        re
+        return colors[transaction.title.hashValue % colors.count]
+    }
+}
+
+struct TrendsView_Previews: PreviewProvider {
+    static var previews: some View {
+        TrendsView()
+    }
+}
