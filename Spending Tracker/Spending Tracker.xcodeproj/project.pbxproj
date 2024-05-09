@@ -28,6 +28,8 @@
 		4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65BC2BE8FA6000753FB5 /* CardView.swift */; };
 		4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */; };
 		4CFE8C3F2BEA1FCD00BEEB1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE8C3E2BEA1FCD00BEEB1C /* Constants.swift */; };
+		DB5D58E62BEBF34F000E7E36 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5D58E52BEBF34F000E7E36 /* ChartModel.swift */; };
+		DB89C1242BEC15D6004E0E01 /* FilterTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB89C1232BEC15D6004E0E01 /* FilterTransactionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,8 @@
 		4C4D65BC2BE8FA6000753FB5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = SOURCE_ROOT; };
 		4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsCardView.swift; sourceTree = SOURCE_ROOT; };
 		4CFE8C3E2BEA1FCD00BEEB1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../Constants.swift; sourceTree = "<group>"; };
+		DB5D58E52BEBF34F000E7E36 /* ChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChartModel.swift; path = "Spending Tracker/View/ChartModel.swift"; sourceTree = SOURCE_ROOT; };
+		DB89C1232BEC15D6004E0E01 /* FilterTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTransactionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +166,7 @@
 			children = (
 				4C4D659B2BE8D38300753FB5 /* Tabs.swift */,
 				4C4D65A72BE8DC2500753FB5 /* Classification.swift */,
+				DB5D58E52BEBF34F000E7E36 /* ChartModel.swift */,
 				4C4D65A32BE8DA8E00753FB5 /* Transactions.swift */,
 				4C4D65A92BE8DE8F00753FB5 /* AssignColour.swift */,
 			);
@@ -173,6 +178,7 @@
 			children = (
 				4C4D65BB2BE8FA4900753FB5 /* Helpers */,
 				4C4D656F2BE886BD00753FB5 /* ContentView.swift */,
+				DB89C1232BEC15D6004E0E01 /* FilterTransactionView.swift */,
 				4C4D65AE2BE8E3AD00753FB5 /* HomeView.swift */,
 				4C4D65B02BE8E3C400753FB5 /* SearchView.swift */,
 				4C4D65B22BE8E3DA00753FB5 /* TrendsView.swift */,
@@ -334,6 +340,7 @@
 				4C4D65B32BE8E3DA00753FB5 /* TrendsView.swift in Sources */,
 				4C4D65A42BE8DA8E00753FB5 /* Transactions.swift in Sources */,
 				4C4D65B12BE8E3C400753FB5 /* SearchView.swift in Sources */,
+				DB5D58E62BEBF34F000E7E36 /* ChartModel.swift in Sources */,
 				4C4D65702BE886BD00753FB5 /* ContentView.swift in Sources */,
 				4C4D656E2BE886BD00753FB5 /* Spending_TrackerApp.swift in Sources */,
 				4C4D65BA2BE8F85100753FB5 /* Date+Extensions.swift in Sources */,
@@ -347,6 +354,7 @@
 				4C4D65A82BE8DC2500753FB5 /* Classification.swift in Sources */,
 				4C4D65B82BE8F35400753FB5 /* Views+Extensions.swift in Sources */,
 				4C4D65B52BE8E3EA00753FB5 /* SettingsView.swift in Sources */,
+				DB89C1242BEC15D6004E0E01 /* FilterTransactionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,6 +38,7 @@ class Transactions{
     var newClassification: Classification? {
         return Classification.allCases.first(where: {classification == $0.rawValue})
     }
+    
 }
 
 

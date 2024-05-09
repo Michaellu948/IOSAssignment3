@@ -37,6 +37,7 @@ struct AddTransactionView: View {
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .hSpacing(.leading)
+                   
                     
                     HStack(spacing: 15){
                         TextField("0.0", value: $amount, formatter: numberFormatter)

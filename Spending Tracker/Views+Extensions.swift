@@ -41,6 +41,13 @@ extension View {
         
         return formatter.string(from: .init(value: value)) ?? ""
     }
+    
+    func total(_ transactions: [Transactions], classification: Classification) -> Double {
+        return transactions.filter({ $0.classification == classification.rawValue }).reduce(Double.zero) { partialResult , transaction in
+            return partialResult + transaction.amount
+            
+        }
+    }
 }
 
 
