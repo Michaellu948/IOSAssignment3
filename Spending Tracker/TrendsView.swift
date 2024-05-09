@@ -27,3 +27,4 @@ struct TrendsView: View {
 #Preview {
     TrendsView()
 }
+
