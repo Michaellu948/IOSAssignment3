@@ -13,7 +13,7 @@ struct ContentView: View {
         TabView(selection: $currentTab) {
             HomeView().tabItem { Tabs.home.tabContent }.tag(Tabs.home)
             SearchView().tabItem { Tabs.search.tabContent }.tag(Tabs.search)
-            TrendsView().tabItem { Tabs.trends.tabContent }.tag(Tabs.trends)
+            TrendsView().tabItem { Tabs.graph.tabContent }.tag(Tabs.graph)
             SettingsView().tabItem { Tabs.settings.tabContent }.tag(Tabs.settings)
         }
     }

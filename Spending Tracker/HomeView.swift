@@ -25,14 +25,6 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
                         Section {
-                            
-                            Button(action: {}, label: {
-                                Text("\(format(date: startDate, format: "dd - MMM yy")) to \(format(date: startDate, format: "dd - MMM yy"))")
-                                    .font(.caption2)
-                                    .foregroundStyle(.gray)
-                            })
-                            .hSpacing(.leading)
-                            
                             FilterTransactionView(startDate: startDate, endDate: endDate){ transactions in
                                 CardView(income: total(transactions, classification: .income),
                                          expense: total(transactions, classification: .expense))
@@ -83,13 +75,15 @@ struct HomeView: View {
             NavigationLink {
                 AddTransactionView()
             } label: {
-                Image(systemName: "plus")
+                Text("Add Transaction")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    .frame(width: 45, height: 45)
-                    .background(.blue.gradient, in: .circle)
-                    .contentShape(.circle)
+                    .frame(width: 150, height: 45)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 5)
+                    .background(Color.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             
         }
@@ -119,20 +113,20 @@ struct HomeView: View {
                     .padding(.vertical, 10)
                     .background {
                         if classification == selectedCategory {
-                            Capsule()
+                            Rectangle()
                                 .fill(.background)
                                 .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
                         }
                     }
-                    .contentShape(.capsule)
+                    .contentShape(Rectangle()) // Change contentShape to Rectangle
                     .onTapGesture {
-                        withAnimation(.snappy) {
+                        withAnimation(.easeInOut(duration: 0.5)) {
                             selectedCategory = classification
                         }
                     }
             }
         }
-        .background(.gray.opacity(0.15), in: .capsule)
+        .background(.gray.opacity(0.15), in: Rectangle())
         .padding(.top, 5)
     }
     
