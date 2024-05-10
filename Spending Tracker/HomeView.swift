@@ -61,12 +61,6 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Welcome!")
                     .font(.title.bold())
-                
-                if !userName.isEmpty {
-                    Text(userName)
-                        .font(.callout)
-                        .foregroundStyle(.gray)
-                }
             })
             .visualEffect { content, geometryProxy in
                 content.scaleEffect(headerScale(size, proxy: geometryProxy), anchor: .topLeading)
