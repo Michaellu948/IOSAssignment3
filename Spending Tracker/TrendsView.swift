@@ -27,7 +27,6 @@ struct TrendsView: View {
             .frame(height: 480)
             .padding()
             
-            
 
             if let mostExpensive = mostExpensiveTransaction {
                 Text("Your highest expense is on \(mostExpensive.title). Try to manage this category better next time.")

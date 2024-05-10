@@ -35,6 +35,7 @@ struct SearchView: View {
                 }
                 .padding(15)
             }
+            .background(.gray.opacity(0.15))
             .background(
                 NavigationLink(destination: AddTransactionView(editTransaction: transactionToEdit), isActive: $isEditingTransaction){
                     EmptyView()
