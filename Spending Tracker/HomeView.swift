@@ -25,23 +25,22 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
                         Section {
-                            FilterTransactionView(startDate: startDate, endDate: endDate){ transactions in
-                                CardView(income: total(transactions, classification: .income),
-                                         expense: total(transactions, classification: .expense))
-                                
-                                CustomSegmentedControl()
-                                    .padding(.bottom, 10)
-                                
-                                ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
-                                    NavigationLink(value: transaction){
-                                        TransactionsCardView(transactions: transaction)
-                                    }
-                                    .buttonStyle(.plain)
+                            CardView(income: total(transactions, classification: .income),
+                                     expense: total(transactions, classification: .expense))
+                            
+                            CustomSegmentedControl()
+                                .padding(.bottom, 10)
+                            
+                            ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
+                                NavigationLink(value: transaction){
+                                    TransactionsCardView(transactions: transaction)
                                 }
+                                .buttonStyle(.plain)
                             }
-                        } header: {
-                            HeaderView(size)
                         }
+                    header: {
+                        HeaderView(size)
+                    }
                     }
                     .padding(15)
                 }
@@ -111,7 +110,7 @@ struct HomeView: View {
                                 .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
                         }
                     }
-                    .contentShape(Rectangle()) 
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.5)) {
                             selectedCategory = classification
