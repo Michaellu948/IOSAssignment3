@@ -11,39 +11,50 @@ struct TransactionsCardView: View {
     @Environment(\.modelContext) private var context
     var transactions: Transactions
     var body: some View {
-        HStack(spacing: 12) {
-            Text("\(String(transactions.remarks.prefix(1)))")
-                .font(.title)
-                .fontWeight(.semibold)
-                .frame(width:45, height: 45)
-                .foregroundStyle(.white)
-                .background(transactions.colour.gradient, in: .circle)
-            
-            VStack(alignment: .leading, spacing: 4, content: {
+        HStack {
+            // Leading icon with dynamic background based on transaction type
+            Circle()
+                .fill(transactions.colour.gradient)
+                .frame(width: 45, height: 45)
+                .overlay(
+                    Text("\(String(transactions.remarks.prefix(1)))")
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                )
+
+            // Transaction details
+            VStack(alignment: .leading, spacing: 6) {
                 Text(transactions.remarks)
-                    .foregroundStyle(Color.primary)
-                
+                    .font(.headline)
+                    .lineLimit(1)
+
                 Text(transactions.title)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+
+                Text(format(date: transactions.dateAdded, format: "dd MMM yyyy"))
                     .font(.caption)
-                    .foregroundStyle(Color.primary.secondary)
-                
-                Text(format(date: transactions.dateAdded, format: "dd - MMM yyyy"))
-                    .font(.caption2)
-                    .foregroundStyle(.gray)
-            })
-            .lineLimit(1)
-            .hSpacing(.leading)
-            
+                    .foregroundColor(.gray)
+            }
+            .padding(.leading, 10)
+
+            Spacer()
+
+            // Amount display
             Text(currencyString(transactions.amount, allowedDigits: 2))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background(Color.blue, in: RoundedRectangle(cornerRadius: 10))
+                .background(Color.blue)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 10)
-        .background(.background, in: .rect(cornerRadius: 10))
+        .padding()
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .shadow(radius: 5)
     }
 }
 
