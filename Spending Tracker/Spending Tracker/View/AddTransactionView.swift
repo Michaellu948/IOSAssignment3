@@ -192,6 +192,8 @@ extension TransactionTypes {
             Image(systemName: "car")
         case .entertainment:
             Image(systemName: "movieclapper")
+        case .salary:
+            Image(systemName: "dollarsign.square.fill")
         case .other:
             Image(systemName: "doc.questionmark")
         }
