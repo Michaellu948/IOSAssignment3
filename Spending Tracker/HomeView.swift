@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @AppStorage("userName") private var userName: String = ""
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
     
@@ -78,7 +77,6 @@ struct HomeView: View {
             }
             
         }
-        .padding(.bottom, userName.isEmpty ? 10 : 5)
         .background {
             VStack(spacing: 0) {
                 Rectangle()
