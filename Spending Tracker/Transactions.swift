@@ -28,7 +28,7 @@ class Transactions{
     }
     
     var colour: Color {
-        return colours.first(where: {$0.colours == assignColour})?.value ?? appTint
+        return colours.first(where: {$0.colours == assignColour})?.value ?? Color.blue
     }
     
     var assignCol: AssignColour?{

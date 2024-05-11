@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
     
+    // Query to sort transactions by date made
     @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)], animation: .snappy) private var transactions: [Transactions]
     
     var body: some View {
@@ -22,12 +23,14 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
                         Section {
+                            // Displays total income/expense
                             CardView(income: total(transactions, classification: .income),
                                      expense: total(transactions, classification: .expense))
                             
                             CustomSegmentedControl()
                                 .padding(.bottom, 10)
                             
+                            // Display individual transactions based on if its income or expense
                             ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
                                 NavigationLink(value: transaction){
                                     TransactionsCardView(transactions: transaction)
