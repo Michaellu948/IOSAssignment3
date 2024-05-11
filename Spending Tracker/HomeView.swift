@@ -25,6 +25,7 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
                         Section {
+                            // memememe
                             CardView(income: total(transactions, classification: .income),
                                      expense: total(transactions, classification: .expense))
                             
