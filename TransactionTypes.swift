@@ -12,6 +12,7 @@ enum TransactionTypes: String, CaseIterable, Identifiable {
     case groceries = "Groceries"
     case transport = "Transport"
     case entertainment = "Entertainment"
+    case salary = "Salary"
     case other = "Others"
     
     var id: String{ self.rawValue }
@@ -29,6 +30,9 @@ enum TransactionTypes: String, CaseIterable, Identifiable {
             Text(self.rawValue)
         case .entertainment:
             Image(systemName: "movieclapper")
+            Text(self.rawValue)
+        case .salary:
+            Image(systemName: "dollarsign.square.fill")
             Text(self.rawValue)
         case .other:
             Image(systemName: "doc.questionmark")
