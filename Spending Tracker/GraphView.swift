@@ -128,7 +128,6 @@ struct LegendView: View {
                 )
 
             Text(text)
-                .foregroundColor(.black)
                 .font(.caption)
         }
     }
