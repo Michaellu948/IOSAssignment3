@@ -10,8 +10,6 @@ import SwiftData
 
 struct HomeView: View {
     @AppStorage("userName") private var userName: String = ""
-    @State private var startDate: Date = .now.startOfMonth
-    @State private var endDate: Date = .now.endOfMonth
     @State private var selectedCategory: Classification = .expense
     @Namespace private var animation
     
