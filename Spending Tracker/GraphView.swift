@@ -15,8 +15,16 @@ struct GraphView: View {
         transactions.filter { $0.classification == Classification.expense.rawValue }
     }
     private var mostExpensiveTransaction: Transactions? {
-                expenseTransactions.max(by: { $0.amount < $1.amount })
-            }
+        expenseTransactions.max(by: { $0.amount < $1.amount })
+    }
+
+    private let categoryColors: [String: Color] = [
+        "Food": .red,
+        "Groceries": .green,
+        "Transport": .blue,
+        "Entertainment": .orange,
+        "Others": .gray
+    ]
 
     var body: some View {
         VStack {
@@ -26,7 +34,6 @@ struct GraphView: View {
             
             GeometryReader { geometry in
                 createPieChart(geometry: geometry)
-                
                 legendView()
                     .padding(.top, 20)
             }
@@ -46,68 +53,55 @@ struct GraphView: View {
                 .padding()
             }
         }
-
-    }
-    private func aggregateExpensesByTitle() -> [String: Double] {
-        var aggregatedExpenses: [String: Double] = [:]
-        for transaction in expenseTransactions {
-            aggregatedExpenses[transaction.title, default: 0] += transaction.amount
-        }
-        return aggregatedExpenses
-    }
-    
-    
-    private func calculateAngles(for expenses: [String: Double], totalAmount: Double) -> [(title: String, color: Color, startAngle: CGFloat, endAngle: CGFloat)] {
-        var slices: [(title: String, color: Color, startAngle: CGFloat, endAngle: CGFloat)] = []
-        var startAngle = -CGFloat.pi / 2
-
-        for (index, title) in expenses.keys.enumerated() {
-            let amount = expenses[title] ?? 0
-            let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
-            slices.append((title, colorForIndex(index), startAngle, endAngle))
-            startAngle = endAngle
-        }
-
-        return slices
     }
 
-
-    
     private func createPieChart(geometry: GeometryProxy) -> some View {
         let width = min(geometry.size.width, geometry.size.height)
         let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
         let radius = width / 3
         let expenses = aggregateExpensesByTitle()
         let totalAmount = expenses.values.reduce(0, +)
-        let slices = calculateAngles(for: expenses, totalAmount: totalAmount)
 
         return ZStack {
-            ForEach(slices, id: \.title) { slice in
-                PieSliceView(color: slice.color, title: slice.title, startAngle: slice.startAngle, endAngle: slice.endAngle, center: center, radius: radius)
+            ForEach(Array(expenses.keys.enumerated()), id: \.element) { index, title in
+                if let color = categoryColors[title], let amount = expenses[title] {
+                    let startAngle = index == 0 ? -CGFloat.pi / 2 : cumulativeAngles(for: expenses, totalAmount: totalAmount)[index - 1].end
+                    let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
+                    PieSliceView(color: color, title: title, startAngle: startAngle, endAngle: endAngle, center: center, radius: radius)
+                }
             }
         }
     }
-
 
     private func legendView() -> some View {
         VStack(alignment: .leading) {
-            ForEach(Array(aggregateExpensesByTitle().keys.enumerated()), id: \.element) { index, title in
-                LegendView(color: colorForIndex(index), text: title)
+            ForEach(Array(categoryColors.keys.sorted()), id: \.self) { title in
+                if let color = categoryColors[title] {
+                    LegendView(color: color, text: title)
+                }
             }
         }
     }
 
-    
-    private func cumulativeAngles(for transactions: [Transactions], total: Double) -> [(start: CGFloat, end: CGFloat)] {
+    private func aggregateExpensesByTitle() -> [String: Double] {
+        var aggregatedExpenses: [String: Double] = [:]
+        for transaction in expenseTransactions {
+            let title = transaction.title
+            aggregatedExpenses[title, default: 0] += transaction.amount
+            
+        }
+        return aggregatedExpenses
+    }
+
+    private func cumulativeAngles(for expenses: [String: Double], totalAmount: Double) -> [(start: CGFloat, end: CGFloat)] {
         var angles = [(start: CGFloat, end: CGFloat)]()
         var startAngle = -CGFloat.pi / 2
-        
-        for transaction in transactions {
-            let endAngle = startAngle + 2 * .pi * CGFloat(transaction.amount / total)
+        for (index, _) in expenses.keys.enumerated() {
+            let amount = expenses[Array(expenses.keys)[index]] ?? 0
+            let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
             angles.append((start: startAngle, end: endAngle))
             startAngle = endAngle
         }
-        
         return angles
     }
 }
@@ -131,11 +125,6 @@ struct LegendView: View {
                 .font(.caption)
         }
     }
-}
-
-private func colorForIndex(_ index: Int) -> Color {
-    let colors: [Color] = [.red, .green, .blue, .orange, .purple, .yellow, .gray, .pink, .cyan, .mint]
-    return colors[index % colors.count]
 }
 
 struct PieSliceView: View {
@@ -166,14 +155,8 @@ struct PieSliceView: View {
             .position(x: x, y: y)
             .foregroundColor(.white)
     }
-
-
-    private func colorForIndex(_ index: Int) -> Color {
-        let colors: [Color] = [.red, .green, .blue, .orange, .purple, .yellow, .gray, .pink, .cyan, .mint]
-        return colors[index % colors.count]
-    }
-
 }
+
 
 #Preview{
     GraphView()
