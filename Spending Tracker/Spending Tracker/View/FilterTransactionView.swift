@@ -2,7 +2,7 @@
 //  FilterTransactionView.swift
 //  Spending Tracker
 //
-//  Created by 吴泓昕 on 5/9/24.
+//  Created by Donghyeop Lee on 5/9/24.
 //
 
 import SwiftUI
