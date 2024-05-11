@@ -60,9 +60,6 @@ struct HomeView: View {
                 Text("Welcome!")
                     .font(.title.bold())
             })
-            .visualEffect { content, geometryProxy in
-                content.scaleEffect(headerScale(size, proxy: geometryProxy), anchor: .topLeading)
-            }
             Spacer(minLength: 0)
             NavigationLink {
                 AddTransactionView()
@@ -85,10 +82,6 @@ struct HomeView: View {
                     .fill(.ultraThinMaterial)
                 
                 Divider()
-                    .visualEffect { content, geometryProxy in
-                        content
-                            .opacity(headerBGOpacity(geometryProxy))
-                    }
             }
             .padding(.horizontal, -15)
             .padding(.top, -(safeArea.top + 15))
@@ -119,20 +112,6 @@ struct HomeView: View {
         }
         .background(.gray.opacity(0.15), in: Rectangle())
         .padding(.top, 5)
-    }
-    
-    func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
-        let minY = proxy.frame(in: .scrollView).minY + safeArea.top
-        return minY > 0 ? 0 : (-minY / 15)
-    }
-    
-    func headerScale(_ size: CGSize, proxy: GeometryProxy) -> CGFloat {
-        let minY = proxy.frame(in: .scrollView).minY
-        let screenHeight = size.height
-        
-        let progress = minY / screenHeight
-        let scale = (min(max(progress, 0), 1)) * 0.6
-        return 1 + scale
     }
 }
 

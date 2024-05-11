@@ -24,7 +24,7 @@
 		4C4D65B12BE8E3C400753FB5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B02BE8E3C400753FB5 /* SearchView.swift */; };
 		4C4D65B32BE8E3DA00753FB5 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B22BE8E3DA00753FB5 /* GraphView.swift */; };
 		4C4D65B52BE8E3EA00753FB5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B42BE8E3EA00753FB5 /* SettingsView.swift */; };
-		4C4D65B82BE8F35400753FB5 /* Views+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */; };
+		4C4D65B82BE8F35400753FB5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65B72BE8F35400753FB5 /* Extensions.swift */; };
 		4C4D65BD2BE8FA6000753FB5 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65BC2BE8FA6000753FB5 /* CardView.swift */; };
 		4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */; };
 		4CD0B62B2BECAE060045C088 /* TransactionTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD0B62A2BECAE060045C088 /* TransactionTypes.swift */; };
@@ -69,7 +69,7 @@
 		4C4D65B02BE8E3C400753FB5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = SOURCE_ROOT; };
 		4C4D65B22BE8E3DA00753FB5 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = SOURCE_ROOT; };
 		4C4D65B42BE8E3EA00753FB5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = SOURCE_ROOT; };
-		4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Views+Extensions.swift"; sourceTree = SOURCE_ROOT; };
+		4C4D65B72BE8F35400753FB5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = "Spending Tracker/Model/Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		4C4D65BC2BE8FA6000753FB5 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CardView.swift; path = "Spending Tracker/View/CardView.swift"; sourceTree = SOURCE_ROOT; };
 		4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionsCardView.swift; path = "Spending Tracker/View/TransactionsCardView.swift"; sourceTree = SOURCE_ROOT; };
 		4CD0B62A2BECAE060045C088 /* TransactionTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionTypes.swift; path = ../../../TransactionTypes.swift; sourceTree = "<group>"; };
@@ -124,7 +124,6 @@
 		4C4D656C2BE886BD00753FB5 /* Spending Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				4C4D65B62BE8F31F00753FB5 /* Helpers */,
 				4C4D65972BE8D2B100753FB5 /* Model */,
 				4C4D65982BE8D2C200753FB5 /* View */,
 				4C4D656D2BE886BD00753FB5 /* Spending_TrackerApp.swift */,
@@ -168,6 +167,7 @@
 				4C4D65A32BE8DA8E00753FB5 /* Transactions.swift */,
 				4C4D65A92BE8DE8F00753FB5 /* AssignColour.swift */,
 				4CD0B62A2BECAE060045C088 /* TransactionTypes.swift */,
+				4C4D65B72BE8F35400753FB5 /* Extensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -186,14 +186,6 @@
 				4C4D65BC2BE8FA6000753FB5 /* CardView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		4C4D65B62BE8F31F00753FB5 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				4C4D65B72BE8F35400753FB5 /* Views+Extensions.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,7 +331,7 @@
 				4C4D65C12BE903EF00753FB5 /* TransactionsCardView.swift in Sources */,
 				4C4D65AA2BE8DE8F00753FB5 /* AssignColour.swift in Sources */,
 				4C4D65A82BE8DC2500753FB5 /* Classification.swift in Sources */,
-				4C4D65B82BE8F35400753FB5 /* Views+Extensions.swift in Sources */,
+				4C4D65B82BE8F35400753FB5 /* Extensions.swift in Sources */,
 				4C4D65B52BE8E3EA00753FB5 /* SettingsView.swift in Sources */,
 				DB89C1242BEC15D6004E0E01 /* FilterTransactionView.swift in Sources */,
 				4CD0B62B2BECAE060045C088 /* TransactionTypes.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  Views+Extensions.swift
+//  Extensions.swift
 //  Spending Tracker
 //
 //  Created by Michael Lu on 6/5/2024.
@@ -12,12 +12,6 @@ extension View {
     func hSpacing(_ alignment: Alignment = .center) -> some View {
         self
             .frame(maxWidth: .infinity, alignment: alignment)
-    }
-    
-    @ViewBuilder
-    func vSpacing(_ alignment: Alignment = .center) -> some View {
-        self
-            .frame(maxHeight: .infinity, alignment: alignment)
     }
     
     var safeArea: UIEdgeInsets {
