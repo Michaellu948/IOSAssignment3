@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 
-struct TrendsView: View {
+struct GraphView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
 
     private var expenseTransactions: [Transactions] {
@@ -26,7 +26,6 @@ struct TrendsView: View {
             }
             .frame(height: 480)
             .padding()
-            
 
             if let mostExpensive = mostExpensiveTransaction {
                 Text("Your highest expense is on \(mostExpensive.title). Try to manage this category better next time.")
@@ -36,6 +35,7 @@ struct TrendsView: View {
             }
         }
     }
+    
     private func legendView() -> some View {
             VStack(alignment: .leading) {
                 ForEach(expenseTransactions.indices, id: \.self) { index in
@@ -75,6 +75,7 @@ struct TrendsView: View {
         return angles
     }
 }
+
 struct LegendView: View {
     var color: Color
     var text: String
@@ -96,6 +97,7 @@ struct LegendView: View {
         }
     }
 }
+
 private func colorForIndex(_ index: Int) -> Color {
     let colors: [Color] = [.red, .green, .blue, .orange, .purple, .yellow, .gray, .pink, .cyan, .mint]
     return colors[index % colors.count]
@@ -134,11 +136,9 @@ struct PieSliceView: View {
             .position(x: x, y: y)
             .foregroundColor(.white)
     }
-    
-    
 }
 
 #Preview{
-    TrendsView()
+    GraphView()
     
 }

@@ -48,7 +48,6 @@ struct AddTransactionView: View {
                         TextField("Amount", value: $amount, formatter: numberFormatter)
                             .keyboardType(.decimalPad)
                     }
-
                     DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
                 }
 
@@ -144,7 +143,6 @@ struct AddTransactionView: View {
                                 .foregroundStyle(.blue)
                         }
                     }
-                    
                     Text(classification.rawValue)
                         .font(.caption)
                 }
@@ -159,6 +157,7 @@ struct AddTransactionView: View {
         .hSpacing(.leading)
         .background(.background, in: .rect(cornerRadius: 10))
     }
+    
     struct ClassificationPicker: View {
         @Binding var classification: Classification
 
@@ -180,6 +179,7 @@ struct AddTransactionView: View {
         return formatter
     }
 }
+
 extension TransactionTypes {
     @ViewBuilder
     var transactionIcon: some View {
@@ -197,6 +197,7 @@ extension TransactionTypes {
         }
     }
 }
+
 #Preview {
     NavigationStack{
         AddTransactionView()

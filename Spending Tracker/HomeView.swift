@@ -39,8 +39,6 @@ struct HomeView: View {
                                     .buttonStyle(.plain)
                                 }
                             }
-                            
-                            
                         } header: {
                             HeaderView(size)
                         }
@@ -55,6 +53,7 @@ struct HomeView: View {
             }
         }
     }
+    
     @ViewBuilder
     func HeaderView(_ size: CGSize) -> some View {
         HStack(spacing: 10) {
@@ -112,7 +111,7 @@ struct HomeView: View {
                                 .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
                         }
                     }
-                    .contentShape(Rectangle()) // Change contentShape to Rectangle
+                    .contentShape(Rectangle()) 
                     .onTapGesture {
                         withAnimation(.easeInOut(duration: 0.5)) {
                             selectedCategory = classification
