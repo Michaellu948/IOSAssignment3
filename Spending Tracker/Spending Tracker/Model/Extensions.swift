@@ -18,7 +18,6 @@ extension View {
         if let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene) {
             return windowScene.keyWindow?.safeAreaInsets ?? .zero
         }
-        
         return .zero
     }
     

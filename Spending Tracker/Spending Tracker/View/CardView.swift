@@ -39,7 +39,6 @@ struct CardView: View {
                                     .padding(.vertical, 5)
                                     .background(Color.blue, in: RoundedRectangle(cornerRadius: 10))
                             }
-                            
                             if classification == .income {
                                 Spacer(minLength: 10)
                             }
@@ -54,6 +53,6 @@ struct CardView: View {
 
 #Preview {
     ScrollView {
-        CardView(income: 4590, expense: 2389)
+        CardView(income: 1000, expense: 1000)
     }
 }

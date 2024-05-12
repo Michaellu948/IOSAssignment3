@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var selectedCategory: Classification = .expense
+    @State private var selectedClassification: Classification = .expense
     @Namespace private var animation
     
     // Query to sort transactions by date made
@@ -31,7 +31,7 @@ struct HomeView: View {
                                 .padding(.bottom, 10)
                             
                             // Display individual transactions based on if its income or expense
-                            ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
+                            ForEach(transactions.filter({$0.classification == selectedClassification.rawValue})) { transaction in
                                 NavigationLink(value: transaction){
                                     TransactionsCardView(transactions: transaction)
                                 }
@@ -48,7 +48,6 @@ struct HomeView: View {
                 .navigationDestination(for: Transactions.self) { transaction in
                     AddTransactionView(editTransaction : transaction)
                 }
-                
             }
         }
     }
@@ -90,27 +89,13 @@ struct HomeView: View {
     
     @ViewBuilder
     func CustomSegmentedControl() -> some View {
-        HStack(spacing: 0) {
-            ForEach(Classification.allCases, id: \.rawValue) { classification in
+        Picker("Classification", selection: $selectedClassification) {
+            ForEach(Classification.allCases, id: \.self) { classification in
                 Text(classification.rawValue)
-                    .hSpacing()
-                    .padding(.vertical, 10)
-                    .background {
-                        if classification == selectedCategory {
-                            Rectangle()
-                                .fill(.background)
-                                .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
-                        }
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            selectedCategory = classification
-                        }
-                    }
+                    .tag(classification)
             }
         }
-        .background(.gray.opacity(0.15), in: Rectangle())
+        .pickerStyle(SegmentedPickerStyle())
         .padding(.top, 5)
     }
 }

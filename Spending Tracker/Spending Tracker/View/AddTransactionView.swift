@@ -26,7 +26,6 @@ struct AddTransactionView: View {
                 Section(header: Text("Preview")) {
                     TransactionsCardView(transactions: .init(title: title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
                 }
-                
                 Section(header: Text("Transaction Details").foregroundColor(.secondary)) {
                     Picker("Category", selection: $selectedType) {
                         ForEach(TransactionTypes.allCases, id: \.self) { type in
@@ -37,10 +36,9 @@ struct AddTransactionView: View {
                         }
                     }
                     .pickerStyle(.automatic)
-                    .onChange(of: selectedType){ newValue in
+                    .onChange(of: selectedType) { newValue in
                         title = newValue.rawValue
                     }
-
                     TextField("Description", text: $remarks)
                     
                     HStack {
@@ -50,11 +48,9 @@ struct AddTransactionView: View {
                     }
                     DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
                 }
-
                 Section {
                     ClassificationPicker(classification: $classification)
                 }
-
                 Section {
                     Button("Save", action: saveTransaction)
                     if editTransaction != nil {
@@ -84,7 +80,7 @@ struct AddTransactionView: View {
             dateAdded = editTransaction.dateAdded
             classification = editTransaction.newClassification ?? .expense
             assignColour = editTransaction.assignCol ?? colours.randomElement()!
-        } else{
+        } else {
             title = selectedType.rawValue
         }
     }
@@ -97,8 +93,7 @@ struct AddTransactionView: View {
             editTransaction.amount = amount
             editTransaction.classification = classification.rawValue
             editTransaction.dateAdded = dateAdded
-            
-        } else{
+        } else {
             let transaction = Transactions(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour)
             context.insert(transaction)
         }
@@ -128,9 +123,9 @@ struct AddTransactionView: View {
     }
     
     @ViewBuilder
-    func ClassficationCheckBox() -> some View{
+    func ClassficationCheckBox() -> some View {
         HStack(spacing: 10){
-            ForEach(Classification.allCases, id: \.rawValue){ classification in
+            ForEach(Classification.allCases, id: \.rawValue) { classification in
                 HStack(spacing: 5){
                     ZStack{
                         Image(systemName: "circle")
@@ -170,7 +165,6 @@ struct AddTransactionView: View {
             .pickerStyle(.segmented)
         }
     }
-    
     var numberFormatter: NumberFormatter{
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

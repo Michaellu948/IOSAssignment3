@@ -88,7 +88,6 @@ struct GraphView: View {
         for transaction in expenseTransactions {
             let title = transaction.title
             aggregatedExpenses[title, default: 0] += transaction.amount
-            
         }
         return aggregatedExpenses
     }
@@ -120,7 +119,6 @@ struct LegendView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color.white, lineWidth: 1)
                 )
-
             Text(text)
                 .font(.caption)
         }

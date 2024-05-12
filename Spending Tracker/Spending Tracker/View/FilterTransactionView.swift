@@ -29,15 +29,13 @@ struct FilterTransactionView<Content: View>: View {
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }
         }
-        
         _transactions = Query(filter: predicate, sort:[
             SortDescriptor(\Transactions.dateAdded, order: .reverse)
         ], animation: .snappy)
-        
         self.content = content
     }
 
-    var body: some View{
+    var body: some View {
         content(transactions)
     }
     
