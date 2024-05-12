@@ -7,7 +7,6 @@
 import SwiftUI
 import SwiftData
 
-// view
 struct GraphView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
 
@@ -20,6 +19,7 @@ struct GraphView: View {
         // check the highest value
         expenseTransactions.max(by: {$0.amount < $1.amount})
     }
+    
     // set category colour
     private let categoryColors: [String: Color] = [
         "Food": .red,
@@ -28,7 +28,7 @@ struct GraphView: View {
         "Entertainment": .orange,
         "Others": .gray
     ]
-// view
+    
     var body: some View {
         VStack {
             Text("Expenses Overview")
@@ -44,7 +44,7 @@ struct GraphView: View {
             .padding()
             // set highest value
             if let mostExpensive = mostExpensiveTransaction {
-                VStack { // show higgest expnse on screen
+                VStack { // show highest expense on screen
                     Text("Your highest expense is on ")
                     + Text("\(mostExpensive.title)")
                         .bold()
@@ -68,7 +68,7 @@ struct GraphView: View {
 
         return ZStack {
             ForEach(Array(expenses.keys.enumerated()), id: \.element) {index, title in
-                //following colour from category seleted one
+                //following colour from category selected one
                 if let color = categoryColors[title], let amount = expenses[title] {
                     let startAngle = index == 0 ? -CGFloat.pi / 2 : cumulativeAngles(for: expenses, totalAmount: totalAmount)[index - 1].end
                     let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
@@ -93,7 +93,6 @@ struct GraphView: View {
         //add all expenses on same category
         var aggregatedExpenses: [String: Double] = [:]
         for transaction in expenseTransactions {
-            // it is title but actual code is category
             let title = transaction.title
             aggregatedExpenses[title, default: 0] += transaction.amount
         }
@@ -117,7 +116,7 @@ struct GraphView: View {
 struct LegendView: View {
     var color: Color
     var text: String
-// show colour and wut category is it
+    // show colour and what category it is
     var body: some View {
         HStack {
             Rectangle()
@@ -140,7 +139,6 @@ struct PieSliceView: View {
     var startAngle: CGFloat
     var endAngle: CGFloat
     var center: CGPoint
-    // chart view with colour
     var radius: CGFloat
 
     var body: some View {
@@ -149,14 +147,9 @@ struct PieSliceView: View {
             path.addArc(center: center, radius: radius, startAngle: Angle(radians: Double(startAngle)), endAngle: Angle(radians: Double(endAngle)), clockwise: false)
         }
         .fill(color)
-
     }
-
-
 }
-
 
 #Preview{
     GraphView()
-    
 }

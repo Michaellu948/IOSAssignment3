@@ -17,7 +17,7 @@ struct FilterTransactionView<Content: View>: View {
         // check search text is same as expense item and income item
         var predicate: Predicate<Transactions>
         let rawValue = classification?.rawValue ?? ""
-        // check search text is include title and 
+        // check search text is include title and remarks
         if let searchText = searchText, !searchText.isEmpty {
             predicate = #Predicate<Transactions> {transaction in
                 //if its not empty will show the values has that word
@@ -32,7 +32,6 @@ struct FilterTransactionView<Content: View>: View {
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }
         }
-        //
         _transactions = Query(filter: predicate, sort:[
             SortDescriptor(\Transactions.dateAdded, order: .reverse)
         ], animation: .snappy)

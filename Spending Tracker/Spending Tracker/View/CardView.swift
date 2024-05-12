@@ -14,7 +14,7 @@ struct CardView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 15)
                 .fill(.background)
-            VStack(spacing: 0) { // show balnace on screen
+            VStack(spacing: 0) { // Show balance on screen
                 Text("Current Balance:")
                 .font(.title.bold())
 
@@ -30,7 +30,7 @@ struct CardView: View {
                                 Text(classification.rawValue)
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
-                                // show all epesnse or iincome
+                                // Show all expense or income
                                 Text(currencyString(classification == .income ? income : expense, allowedDigits: 0))
                                     .font(.callout)
                                     .fontWeight(.semibold)
@@ -38,7 +38,7 @@ struct CardView: View {
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)
                                     .background(Color.blue, in: RoundedRectangle(cornerRadius: 10))
-                            }//
+                            }
                             if classification == .income {
                                 Spacer(minLength: 10)
                             }

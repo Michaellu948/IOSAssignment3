@@ -26,12 +26,12 @@ struct TransactionsCardView: View {
 
             // Transaction details
             VStack(alignment: .leading, spacing: 6) {
-                Text(transactions.remarks) // Main remark text.
+                Text(transactions.remarks)
                     .font(.headline)
                     .lineLimit(1)
 
                 Text(transactions.title)
-                    .font(.subheadline) // Smaller font size than remarks.
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
                     .lineLimit(1)
 
@@ -39,12 +39,12 @@ struct TransactionsCardView: View {
                     .font(.caption)
                     .foregroundColor(.gray)
             }
-            .padding(.leading, 10) // Padding to separate from Icon
-
+            .padding(.leading, 10)
+            
             Spacer()
 
             // Transaction Amount display
-            Text(currencyString(transactions.amount, allowedDigits: 2)) //Formats the amount as a currency string
+            Text(currencyString(transactions.amount, allowedDigits: 2)) // Formats the amount as a currency string
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .padding(.horizontal, 10)
@@ -55,7 +55,7 @@ struct TransactionsCardView: View {
         .padding()
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .shadow(radius: 5) // Shadow for 3d effect
+        .shadow(radius: 5) // Shadow for 3D effect
     }
 }
 
