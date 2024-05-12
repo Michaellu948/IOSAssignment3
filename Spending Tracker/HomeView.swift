@@ -19,7 +19,7 @@ struct HomeView: View {
             
             NavigationStack {
                 ScrollView(.vertical) {
-                    LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
+                    LazyVStack(pinnedViews: [.sectionHeaders]) {
                         Section {
                             // Displays total income/expense
                             CardView(income: total(transactions, classification: .income),
@@ -35,15 +35,14 @@ struct HomeView: View {
                                 }
                                 .buttonStyle(.plain)
                             }
+                        } header: {
+                            HeaderView(size)
                         }
-                    header: {
-                        HeaderView(size)
                     }
-                    }
-                    .padding(15)
+                    .padding(10)
                 }
                 .background(.gray.opacity(0.15))
-                .navigationDestination(for: Transactions.self) { transaction in
+                .navigationDestination(for: Transactions.self) {transaction in
                     AddTransactionView(editTransaction: transaction)
                 }
             }
@@ -53,20 +52,20 @@ struct HomeView: View {
     // Header view that contains a welcome message and an add transaction button
     @ViewBuilder
     func HeaderView(_ size: CGSize) -> some View {
-        HStack(spacing: 10) {
+        HStack() {
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Welcome!")
                     .font(.title.bold())
             })
-            Spacer(minLength: 0)
+            Spacer()
             NavigationLink {
                 AddTransactionView()
             } label: {
                 Text("Add Transaction")
                     .font(.title3)
-                    .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    .frame(width: 150, height: 45)
+                    .fontWeight(.semibold)
+                    .frame(width: 150, height: 40)
                     .padding(.horizontal, 5)
                     .padding(.vertical, 5)
                     .background(Color.green)
@@ -75,14 +74,12 @@ struct HomeView: View {
             }
         }
         .background {
-            VStack(spacing: 0) {
+            VStack() {
                 Rectangle()
                     .fill(.ultraThinMaterial)
-                
-                Divider()
             }
-            .padding(.horizontal, -15)
-            .padding(.top, -(safeArea.top + 15))
+            .padding(.top, -(safeArea.top + 10))
+            .padding(.horizontal, -10)
         }
     }
     

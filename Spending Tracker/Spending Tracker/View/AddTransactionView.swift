@@ -88,22 +88,22 @@ struct AddTransactionView: View {
             dateAdded = editTransaction.dateAdded
             classification = editTransaction.newClassification ?? .expense
             assignColour = editTransaction.assignCol ?? colours.randomElement()!
-        } else{
+        } else {
             title = selectedType.rawValue
         }
     }
     
     // Saves new or updates existing transaction to CoreData.
-    func saveTransaction(){
+    func saveTransaction() {
         //Save transaction to SwiftData
-        if let editTransaction = editTransaction{
+        if let editTransaction = editTransaction {
             editTransaction.title = title
             editTransaction.remarks = remarks
             editTransaction.amount = amount
             editTransaction.classification = classification.rawValue
             editTransaction.dateAdded = dateAdded
             
-        } else{
+        } else {
             let transaction = Transactions(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour)
             context.insert(transaction)
         }
@@ -133,7 +133,7 @@ struct AddTransactionView: View {
     }
     
     // Formatter for amount input. Only allow 2 decimal places.
-    var numberFormatter: NumberFormatter{
+    var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2

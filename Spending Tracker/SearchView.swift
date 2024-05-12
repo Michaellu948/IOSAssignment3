@@ -19,13 +19,13 @@ struct SearchView: View {
     let searchPublisher = PassthroughSubject<String, Never>() // Publisher for debouncing search input.
     
     var body: some View {
-        NavigationStack{
-            ScrollView(.vertical){
-                LazyVStack(spacing: 12){
+        NavigationStack {
+            ScrollView(.vertical) {
+                LazyVStack() {
                     // FilterTransactionView handles displaying filtered transactions.
-                    FilterTransactionView(classification: selectedclassification, searchText: filterTxt) { transactions in
+                    FilterTransactionView(classification: selectedclassification, searchText: filterTxt) {transactions in
                         ForEach(transactions){transaction in
-                            Button(action:{
+                            Button(action: {
                                 transactionToEdit = transaction
                                 isEditingTransaction = true
                             }) {
@@ -56,7 +56,7 @@ struct SearchView: View {
             })
             .searchable(text: $searchTxt) // Enable search functionality
             .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
+                ToolbarItem(placement: .topBarTrailing) {
                     ToolBarContent() // Toolbar for filtering (income / expense)
                 }
             }
@@ -65,27 +65,27 @@ struct SearchView: View {
     
     // View builder for the toolbar content, providing a menu to select filters.
     @ViewBuilder
-    func ToolBarContent() -> some View{
-        Menu{
-            Button{
+    func ToolBarContent() -> some View {
+        Menu {
+            Button {
                 selectedclassification = nil // Reset filter to show all transactions.
-            }label: {
+            } label: {
                 HStack{
                     Text("Both")
                     
-                    if selectedclassification == nil{
+                    if selectedclassification == nil {
                         Image(systemName: "checkmark") // Show checkmark if no filter is selected.
                     }
                 }
             }
-            ForEach(Classification.allCases, id: \.rawValue) { classification in
+            ForEach(Classification.allCases, id: \.rawValue) {classification in
                 Button{
                     selectedclassification = classification // Set filter based on selected classification.
                 }label: {
                     HStack{
                         Text(classification.rawValue)
                         
-                        if selectedclassification == classification{
+                        if selectedclassification == classification {
                             Image(systemName: "checkmark") // Show checkmark if this classification is selected.
                         }
                     }

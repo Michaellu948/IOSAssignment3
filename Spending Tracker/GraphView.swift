@@ -14,6 +14,7 @@ struct GraphView: View {
     private var expenseTransactions: [Transactions] {
         transactions.filter {$0.classification == Classification.expense.rawValue}
     }
+    
     private var mostExpensiveTransaction: Transactions? {
         expenseTransactions.max(by: {$0.amount < $1.amount})
     }
