@@ -7,17 +7,18 @@
 
 import SwiftUI
 
+// card-like view for single transaction
 struct TransactionsCardView: View {
     @Environment(\.modelContext) private var context
     var transactions: Transactions
     var body: some View {
         HStack {
-            // Leading icon with dynamic background based on transaction type
+            // Leading icon with a gradient color based on transaction type and a first letter of the remark.
             Circle()
                 .fill(transactions.colour.gradient)
                 .frame(width: 45, height: 45)
                 .overlay(
-                    Text("\(String(transactions.remarks.prefix(1)))")
+                    Text("\(String(transactions.remarks.prefix(1)))") // Displays the first letter of remarks
                         .font(.title)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
@@ -25,25 +26,25 @@ struct TransactionsCardView: View {
 
             // Transaction details
             VStack(alignment: .leading, spacing: 6) {
-                Text(transactions.remarks)
+                Text(transactions.remarks) // Main remark text.
                     .font(.headline)
                     .lineLimit(1)
 
                 Text(transactions.title)
-                    .font(.subheadline)
+                    .font(.subheadline) // Smaller font size than remarks.
                     .foregroundColor(.secondary)
                     .lineLimit(1)
 
-                Text(format(date: transactions.dateAdded, format: "dd MMM yyyy"))
+                Text(format(date: transactions.dateAdded, format: "dd MMM yyyy")) // Formatted transaction date.
                     .font(.caption)
                     .foregroundColor(.gray)
             }
-            .padding(.leading, 10)
+            .padding(.leading, 10) // Padding to separate from Icon
 
             Spacer()
 
-            // Amount display
-            Text(currencyString(transactions.amount, allowedDigits: 2))
+            // Transaction Amount display
+            Text(currencyString(transactions.amount, allowedDigits: 2)) //Formats the amount as a currency string
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .padding(.horizontal, 10)
@@ -54,7 +55,7 @@ struct TransactionsCardView: View {
         .padding()
         .background(Color(.systemBackground))
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        .shadow(radius: 5)
+        .shadow(radius: 5) // Shadow for 3d effect
     }
 }
 

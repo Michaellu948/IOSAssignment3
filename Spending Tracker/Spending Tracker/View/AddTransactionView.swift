@@ -6,10 +6,11 @@
 //
 import SwiftUI
 
+// View for adding or editing a transaction in the Spending Tracker app.
 struct AddTransactionView: View {
-    @Environment(\.modelContext) private var context
-    @Environment(\.dismiss) private var dismiss
-    var editTransaction: Transactions?
+    @Environment(\.modelContext) private var context // Access to the CoreData managed object context.
+    @Environment(\.dismiss) private var dismiss // Dismissal handler for closing the view.
+    var editTransaction: Transactions? // Optional property to hold an existing transaction for editing.
 
     @State private var selectedType: TransactionTypes = .food
     @State private var title: String = ""
@@ -22,11 +23,11 @@ struct AddTransactionView: View {
     var body: some View {
         NavigationView {
             Form {
-                // Add Transaction Card Preview Section
+                // Section for displaying a preview of the transaction card.
                 Section(header: Text("Preview")) {
                     TransactionsCardView(transactions: .init(title: title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
                 }
-                
+                // Section for transaction inputs
                 Section(header: Text("Transaction Details").foregroundColor(.secondary)) {
                     Picker("Category", selection: $selectedType) {
                         ForEach(TransactionTypes.allCases, id: \.self) { type in
@@ -38,7 +39,7 @@ struct AddTransactionView: View {
                     }
                     .pickerStyle(.automatic)
                     .onChange(of: selectedType){ newValue in
-                        title = newValue.rawValue
+                        title = newValue.rawValue // Update title when category changes
                     }
 
                     TextField("Description", text: $remarks)
@@ -50,11 +51,13 @@ struct AddTransactionView: View {
                     }
                     DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
                 }
-
+                
+                //Section for selecting classification of transaction. (Income / Expense)
                 Section {
                     ClassificationPicker(classification: $classification)
                 }
 
+                //Section for Save and Delete buttons
                 Section {
                     Button("Save", action: saveTransaction)
                     if editTransaction != nil {
@@ -71,9 +74,10 @@ struct AddTransactionView: View {
                 }
             }
         }
-        .onAppear(perform: loadTransaction)
+        .onAppear(perform: loadTransaction) // Load existing data if editing
     }
 
+    // Loads data from an existing transaction into the form if one is being edited.
     func loadTransaction() {
         if let editTransaction = editTransaction {
             // Load existing data
@@ -89,6 +93,7 @@ struct AddTransactionView: View {
         }
     }
     
+    // Saves new or updates existing transaction to CoreData.
     func saveTransaction(){
         //Save transaction to SwiftData
         if let editTransaction = editTransaction{
@@ -105,6 +110,7 @@ struct AddTransactionView: View {
         dismiss()
     }
     
+    // Deletes current transaction
     func deleteTransaction() {
         if let editTransaction = editTransaction {
             context.delete(editTransaction)
@@ -112,6 +118,7 @@ struct AddTransactionView: View {
         }
     }
 
+    // Picker view for selecting transaction classification. (Income / Expense)
     struct ClassificationPicker: View {
         @Binding var classification: Classification
 
@@ -125,6 +132,7 @@ struct AddTransactionView: View {
         }
     }
     
+    // Formatter for amount input. Only allow 2 decimal places.
     var numberFormatter: NumberFormatter{
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -134,6 +142,7 @@ struct AddTransactionView: View {
     }
 }
 
+// Extension to provides icons from transaction types.
 extension TransactionTypes {
     @ViewBuilder
     var transactionIcon: some View {
