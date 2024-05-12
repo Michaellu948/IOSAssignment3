@@ -14,20 +14,20 @@ struct FilterTransactionView<Content: View>: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
     
     init(classification: Classification?, searchText: String?, showIncome: Bool = true, showExpense: Bool = true, @ViewBuilder content: @escaping ([Transactions]) -> Content) {
-        // check search expens iis right one user want.
+        // check search text is same as expense item and income item
         var predicate: Predicate<Transactions>
         let rawValue = classification?.rawValue ?? ""
-        // check search text
+        // check search text is include title and 
         if let searchText = searchText, !searchText.isEmpty {
             predicate = #Predicate<Transactions> {transaction in
-                //if its not empty will show the value
+                //if its not empty will show the values has that word
                 return (transaction.title.localizedStandardContains(searchText) ||
                         transaction.remarks.localizedStandardContains(searchText)) &&
                     (rawValue.isEmpty ? true : transaction.classification == rawValue) &&
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }
         } else {
-            predicate = #Predicate<Transactions> {transaction in
+            predicate = #Predicate<Transactions> {transaction in // just show 
                 return (rawValue.isEmpty ? true : transaction.classification == rawValue) &&
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }

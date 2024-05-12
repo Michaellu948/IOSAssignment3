@@ -20,7 +20,7 @@ extension View {
         }
         return .zero
     }
-    
+    //date format
     func format(date: Date, format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
@@ -34,7 +34,7 @@ extension View {
         
         return formatter.string(from: .init(value: value)) ?? ""
     }
-    
+    // total value of exoense of income
     func total(_ transactions: [Transactions], classification: Classification) -> Double {
         return transactions.filter({ $0.classification == classification.rawValue }).reduce(Double.zero) { partialResult , transaction in
             return partialResult + transaction.amount

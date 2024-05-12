@@ -12,7 +12,7 @@ struct AssignColour: Identifiable {
     var colours: String
     var value: Color
 }
-
+// colour setting
 var colours: [AssignColour] = [
     .init(colours: "Red", value: .red),
     .init(colours: "Orange", value: .orange),

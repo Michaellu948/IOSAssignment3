@@ -17,7 +17,7 @@ class Transactions{
     var classification: String
     var assignColour: String
 
-    
+    // transactions basic init paramater
     init(title: String, remarks: String, amount: Double, dateAdded: Date, classification: Classification, assignColour: AssignColour) {
         self.title = title
         self.remarks = remarks

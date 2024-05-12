@@ -28,7 +28,7 @@ struct GraphView: View {
         "Entertainment": .orange,
         "Others": .gray
     ]
-
+// view
     var body: some View {
         VStack {
             Text("Expenses Overview")
@@ -42,9 +42,9 @@ struct GraphView: View {
             }
             .frame(height: 480)
             .padding()
-            
+            // set highest value
             if let mostExpensive = mostExpensiveTransaction {
-                VStack {
+                VStack { // show higgest expnse on screen
                     Text("Your highest expense is on ")
                     + Text("\(mostExpensive.title)")
                         .bold()
@@ -68,6 +68,7 @@ struct GraphView: View {
 
         return ZStack {
             ForEach(Array(expenses.keys.enumerated()), id: \.element) {index, title in
+                //following colour from category seleted one
                 if let color = categoryColors[title], let amount = expenses[title] {
                     let startAngle = index == 0 ? -CGFloat.pi / 2 : cumulativeAngles(for: expenses, totalAmount: totalAmount)[index - 1].end
                     let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
@@ -116,7 +117,7 @@ struct GraphView: View {
 struct LegendView: View {
     var color: Color
     var text: String
-
+// show colour and wut category is it
     var body: some View {
         HStack {
             Rectangle()

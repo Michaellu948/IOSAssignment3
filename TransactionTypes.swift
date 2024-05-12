@@ -17,6 +17,7 @@ enum TransactionTypes: String, CaseIterable, Identifiable {
     
     var id: String{self.rawValue}
     @ViewBuilder
+    // images each category
     var transactionType: some View {
         switch self {
         case .food:
