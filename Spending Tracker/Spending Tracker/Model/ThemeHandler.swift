@@ -8,6 +8,6 @@
 import Foundation
 import SwiftUI
 
-class ThemeHandler: ObservableObject{
+class ThemeHandler: ObservableObject {
     @Published var isDarkModeEnabled: Bool = false
 }

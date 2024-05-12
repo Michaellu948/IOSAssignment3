@@ -31,8 +31,8 @@ class Transactions{
         return colours.first(where: {$0.colours == assignColour})?.value ?? Color.blue
     }
     
-    var assignCol: AssignColour?{
-        return colours.first(where: { $0.colours == assignColour})
+    var assignCol: AssignColour? {
+        return colours.first(where: {$0.colours == assignColour})
     }
     
     var newClassification: Classification? {

@@ -37,7 +37,7 @@ struct SearchView: View {
             }
             .background(.gray.opacity(0.15))
             .background(
-                NavigationLink(destination: AddTransactionView(editTransaction: transactionToEdit), isActive: $isEditingTransaction){
+                NavigationLink(destination: AddTransactionView(editTransaction: transactionToEdit), isActive: $isEditingTransaction) {
                     EmptyView()
                 }
             )
@@ -47,7 +47,7 @@ struct SearchView: View {
                 }
                 searchPublisher.send(newText)
             })
-            .onReceive(searchPublisher.debounce(for: .seconds(0.3), scheduler: DispatchQueue.main), perform: { text in filterTxt = text
+            .onReceive(searchPublisher.debounce(for: .seconds(0.3), scheduler: DispatchQueue.main), perform: {text in filterTxt = text
             })
             .searchable(text: $searchTxt)
             .toolbar{

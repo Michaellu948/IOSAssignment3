@@ -36,7 +36,7 @@ struct AddTransactionView: View {
                         }
                     }
                     .pickerStyle(.automatic)
-                    .onChange(of: selectedType) { newValue in
+                    .onChange(of: selectedType) {newValue in
                         title = newValue.rawValue
                     }
                     TextField("Description", text: $remarks)
@@ -85,9 +85,9 @@ struct AddTransactionView: View {
         }
     }
     
-    func saveTransaction(){
+    func saveTransaction() {
         //Save transaction to SwiftData
-        if let editTransaction = editTransaction{
+        if let editTransaction = editTransaction {
             editTransaction.title = title
             editTransaction.remarks = remarks
             editTransaction.amount = amount
@@ -108,7 +108,7 @@ struct AddTransactionView: View {
     }
     
     @ViewBuilder
-    func CustomSection(_ title: String, _ hint: String, value: Binding<String>) -> some View{
+    func CustomSection(_ title: String, _ hint: String, value: Binding<String>) -> some View {
         VStack(alignment: .leading, spacing: 10, content: {
             Text(title)
                 .font(.caption)
@@ -125,14 +125,14 @@ struct AddTransactionView: View {
     @ViewBuilder
     func ClassficationCheckBox() -> some View {
         HStack(spacing: 10){
-            ForEach(Classification.allCases, id: \.rawValue) { classification in
+            ForEach(Classification.allCases, id: \.rawValue) {classification in
                 HStack(spacing: 5){
                     ZStack{
                         Image(systemName: "circle")
                             .font(.title3)
                             .foregroundStyle(.blue)
                         
-                        if self.classification == classification{
+                        if self.classification == classification {
                             Image(systemName: "circle.fill")
                                 .font(.caption)
                                 .foregroundStyle(.blue)
@@ -158,14 +158,15 @@ struct AddTransactionView: View {
 
         var body: some View {
             Picker("Classification", selection: $classification) {
-                ForEach(Classification.allCases, id: \.self) { classification in
+                ForEach(Classification.allCases, id: \.self) {classification in
                     Text(classification.rawValue).tag(classification)
                 }
             }
             .pickerStyle(.segmented)
         }
     }
-    var numberFormatter: NumberFormatter{
+    
+    var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2

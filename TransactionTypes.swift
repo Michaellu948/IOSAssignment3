@@ -15,7 +15,7 @@ enum TransactionTypes: String, CaseIterable, Identifiable {
     case salary = "Salary"
     case other = "Others"
     
-    var id: String{ self.rawValue }
+    var id: String{self.rawValue}
     @ViewBuilder
     var transactionType: some View {
         switch self {
