@@ -66,13 +66,7 @@ struct AddTransactionView: View {
                 }
             }
             .navigationBarTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction", displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
+
         }
         .onAppear(perform: loadTransaction) // Load existing data if editing
     }

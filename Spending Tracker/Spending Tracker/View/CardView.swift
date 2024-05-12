@@ -30,7 +30,7 @@ struct CardView: View {
                                 Text(classification.rawValue)
                                     .font(.caption2)
                                     .foregroundStyle(.gray)
-                                
+                                // show text
                                 Text(currencyString(classification == .income ? income : expense, allowedDigits: 0))
                                     .font(.callout)
                                     .fontWeight(.semibold)
