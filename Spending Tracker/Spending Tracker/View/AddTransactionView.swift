@@ -111,53 +111,7 @@ struct AddTransactionView: View {
             dismiss()
         }
     }
-    
-    @ViewBuilder
-    func CustomSection(_ title: String, _ hint: String, value: Binding<String>) -> some View{
-        VStack(alignment: .leading, spacing: 10, content: {
-            Text(title)
-                .font(.caption)
-                .foregroundStyle(.gray)
-                .hSpacing(.leading)
-            
-            TextField(hint, text: value)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 10)
-                .background(.background, in: .rect(cornerRadius: 10))
-        })
-    }
-    
-    @ViewBuilder
-    func ClassficationCheckBox() -> some View{
-        HStack(spacing: 10){
-            ForEach(Classification.allCases, id: \.rawValue){ classification in
-                HStack(spacing: 5){
-                    ZStack{
-                        Image(systemName: "circle")
-                            .font(.title3)
-                            .foregroundStyle(.blue)
-                        
-                        if self.classification == classification{
-                            Image(systemName: "circle.fill")
-                                .font(.caption)
-                                .foregroundStyle(.blue)
-                        }
-                    }
-                    Text(classification.rawValue)
-                        .font(.caption)
-                }
-                .contentShape(.rect)
-                .onTapGesture{
-                    self.classification = classification
-                }
-            }
-        }
-        .padding(.horizontal, 15)
-        .padding(.vertical, 10)
-        .hSpacing(.leading)
-        .background(.background, in: .rect(cornerRadius: 10))
-    }
-    
+
     struct ClassificationPicker: View {
         @Binding var classification: Classification
 
