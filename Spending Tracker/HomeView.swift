@@ -9,11 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @State private var selectedCategory: Classification = .expense
-    @Namespace private var animation
-    
+    @State private var selectedClassification: Classification = .expense
     // Query to sort transactions by date made
-    @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)], animation: .snappy) private var transactions: [Transactions]
+    @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)]) private var transactions: [Transactions]
     
     var body: some View {
         GeometryReader {
@@ -31,8 +29,8 @@ struct HomeView: View {
                                 .padding(.bottom, 10)
                             
                             // Display individual transactions based on if its income or expense
-                            ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
-                                NavigationLink(value: transaction){
+                            ForEach(transactions.filter({$0.classification == selectedClassification.rawValue})) {transaction in
+                                NavigationLink(value: transaction) {
                                     TransactionsCardView(transactions: transaction)
                                 }
                                 .buttonStyle(.plain)
@@ -46,13 +44,13 @@ struct HomeView: View {
                 }
                 .background(.gray.opacity(0.15))
                 .navigationDestination(for: Transactions.self) { transaction in
-                    AddTransactionView(editTransaction : transaction)
+                    AddTransactionView(editTransaction: transaction)
                 }
-                
             }
         }
     }
     
+    // Header view that contains a welcome message and an add transaction button
     @ViewBuilder
     func HeaderView(_ size: CGSize) -> some View {
         HStack(spacing: 10) {
@@ -73,8 +71,8 @@ struct HomeView: View {
                     .padding(.vertical, 5)
                     .background(Color.green)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(radius: 5)
             }
-            
         }
         .background {
             VStack(spacing: 0) {
@@ -88,29 +86,16 @@ struct HomeView: View {
         }
     }
     
+    // Creates a segmented control for filtering transactions by income/expense
     @ViewBuilder
     func CustomSegmentedControl() -> some View {
-        HStack(spacing: 0) {
-            ForEach(Classification.allCases, id: \.rawValue) { classification in
+        Picker("Classification", selection: $selectedClassification) {
+            ForEach(Classification.allCases, id: \.self) {classification in
                 Text(classification.rawValue)
-                    .hSpacing()
-                    .padding(.vertical, 10)
-                    .background {
-                        if classification == selectedCategory {
-                            Rectangle()
-                                .fill(.background)
-                                .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
-                        }
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            selectedCategory = classification
-                        }
-                    }
+                    .tag(classification)
             }
         }
-        .background(.gray.opacity(0.15), in: Rectangle())
+        .pickerStyle(SegmentedPickerStyle())
         .padding(.top, 5)
     }
 }

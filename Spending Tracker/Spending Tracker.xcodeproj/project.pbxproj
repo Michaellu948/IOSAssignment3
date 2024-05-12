@@ -176,11 +176,11 @@
 			isa = PBXGroup;
 			children = (
 				4C4D656F2BE886BD00753FB5 /* ContentView.swift */,
-				DB89C1232BEC15D6004E0E01 /* FilterTransactionView.swift */,
 				4C4D65AE2BE8E3AD00753FB5 /* HomeView.swift */,
 				4C4D65B02BE8E3C400753FB5 /* SearchView.swift */,
 				4C4D65B22BE8E3DA00753FB5 /* GraphView.swift */,
 				4C4D65B42BE8E3EA00753FB5 /* SettingsView.swift */,
+				DB89C1232BEC15D6004E0E01 /* FilterTransactionView.swift */,
 				110C65922BE9F7B200E59ADD /* AddTransactionView.swift */,
 				4C4D65C02BE903EF00753FB5 /* TransactionsCardView.swift */,
 				4C4D65BC2BE8FA6000753FB5 /* CardView.swift */,

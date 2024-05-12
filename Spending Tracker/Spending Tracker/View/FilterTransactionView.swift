@@ -17,27 +17,25 @@ struct FilterTransactionView<Content: View>: View {
         var predicate: Predicate<Transactions>
         let rawValue = classification?.rawValue ?? ""
         if let searchText = searchText, !searchText.isEmpty {
-            predicate = #Predicate<Transactions> { transaction in
+            predicate = #Predicate<Transactions> {transaction in
                 return (transaction.title.localizedStandardContains(searchText) ||
                         transaction.remarks.localizedStandardContains(searchText)) &&
                     (rawValue.isEmpty ? true : transaction.classification == rawValue) &&
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }
         } else {
-            predicate = #Predicate<Transactions> { transaction in
+            predicate = #Predicate<Transactions> {transaction in
                 return (rawValue.isEmpty ? true : transaction.classification == rawValue) &&
                     ((showIncome && transaction.amount > 0) || (showExpense && transaction.amount < 0))
             }
         }
-        
         _transactions = Query(filter: predicate, sort:[
             SortDescriptor(\Transactions.dateAdded, order: .reverse)
         ], animation: .snappy)
-        
         self.content = content
     }
 
-    var body: some View{
+    var body: some View {
         content(transactions)
     }
     

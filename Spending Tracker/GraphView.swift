@@ -12,10 +12,10 @@ struct GraphView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
 
     private var expenseTransactions: [Transactions] {
-        transactions.filter { $0.classification == Classification.expense.rawValue }
+        transactions.filter {$0.classification == Classification.expense.rawValue}
     }
     private var mostExpensiveTransaction: Transactions? {
-        expenseTransactions.max(by: { $0.amount < $1.amount })
+        expenseTransactions.max(by: {$0.amount < $1.amount})
     }
 
     private let categoryColors: [String: Color] = [
@@ -32,7 +32,7 @@ struct GraphView: View {
                 .font(.title)
                 .padding()
             
-            GeometryReader { geometry in
+            GeometryReader {geometry in
                 createPieChart(geometry: geometry)
                 legendView()
                     .padding(.top, 20)
@@ -63,7 +63,7 @@ struct GraphView: View {
         let totalAmount = expenses.values.reduce(0, +)
 
         return ZStack {
-            ForEach(Array(expenses.keys.enumerated()), id: \.element) { index, title in
+            ForEach(Array(expenses.keys.enumerated()), id: \.element) {index, title in
                 if let color = categoryColors[title], let amount = expenses[title] {
                     let startAngle = index == 0 ? -CGFloat.pi / 2 : cumulativeAngles(for: expenses, totalAmount: totalAmount)[index - 1].end
                     let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
@@ -75,7 +75,7 @@ struct GraphView: View {
 
     private func legendView() -> some View {
         VStack(alignment: .leading) {
-            ForEach(Array(categoryColors.keys.sorted()), id: \.self) { title in
+            ForEach(Array(categoryColors.keys.sorted()), id: \.self) {title in
                 if let color = categoryColors[title] {
                     LegendView(color: color, text: title)
                 }
@@ -88,7 +88,6 @@ struct GraphView: View {
         for transaction in expenseTransactions {
             let title = transaction.title
             aggregatedExpenses[title, default: 0] += transaction.amount
-            
         }
         return aggregatedExpenses
     }
@@ -120,7 +119,6 @@ struct LegendView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(Color.white, lineWidth: 1)
                 )
-
             Text(text)
                 .font(.caption)
         }
@@ -136,7 +134,7 @@ struct PieSliceView: View {
     var radius: CGFloat
 
     var body: some View {
-        Path { path in
+        Path {path in
             path.move(to: center)
             path.addArc(center: center, radius: radius, startAngle: Angle(radians: Double(startAngle)), endAngle: Angle(radians: Double(endAngle)), clockwise: false)
         }
