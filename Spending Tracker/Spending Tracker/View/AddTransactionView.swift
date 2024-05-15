@@ -6,75 +6,105 @@
 //
 import SwiftUI
 
-// View for adding or editing a transaction in the Spending Tracker app.
 struct AddTransactionView: View {
-    @Environment(\.modelContext) private var context // Access to the CoreData managed object context.
-    @Environment(\.dismiss) private var dismiss // Dismissal handler for closing the view.
-    var editTransaction: Transactions? // Optional property to hold an existing transaction for editing.
-
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    var editTransaction: Transactions?
+    
     @State private var selectedType: TransactionTypes = .food
     @State private var title: String = ""
     @State private var remarks: String = ""
     @State private var amount: Double = .zero
     @State private var dateAdded: Date = .now
     @State private var classification: Classification = .expense
-    @State var assignColour: AssignColour = colours.randomElement()!
-
+    @State private var assignColour: AssignColour = colours.randomElement()!
+    
     var body: some View {
         NavigationView {
             Form {
-                // Section for displaying a preview of the transaction card.
-                Section(header: Text("Preview")) {
-                    TransactionsCardView(transactions: .init(title: title, remarks: remarks.isEmpty ? "" : remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
-                }
-                // Section for transaction inputs
-                Section(header: Text("Transaction Details").foregroundColor(.secondary)) {
-                    Picker("Category", selection: $selectedType) {
-                        ForEach(TransactionTypes.allCases, id: \.self) { type in
-                            HStack{
-                                type.transactionIcon
-                                Text(type.rawValue)
-                            }.tag(type)
-                        }
-                    }
-                    .pickerStyle(.automatic)
-                    .onChange(of: selectedType){ newValue in
-                        title = newValue.rawValue // Update title when category changes
-                    }
-
-                    TextField("Description", text: $remarks)
-                    
-                    HStack {
-                        Text("$").foregroundColor(.secondary)
-                        TextField("Amount", value: $amount, formatter: numberFormatter)
-                            .keyboardType(.decimalPad)
-                    }
-                    DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
-                }
-                
-                //Section for selecting classification of transaction. (Income / Expense)
-                Section {
-                    ClassificationPicker(classification: $classification)
-                }
-
-                //Section for Save and Delete buttons
-                Section {
-                    Button("Save", action: saveTransaction)
-                    if editTransaction != nil {
-                        Button("Delete", role: .destructive, action: deleteTransaction)
-                    }
-                }
+                previewSection
+                transactionDetailsSection
+                classificationPickerSection
+                actionButtonsSection
             }
             .navigationBarTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction", displayMode: .inline)
-
+            .onAppear(perform: loadTransaction)
         }
-        .onAppear(perform: loadTransaction) // Load existing data if editing
     }
-
-    // Loads data from an existing transaction into the form if one is being edited.
-    func loadTransaction() {
+    
+    // Preview Section
+    private var previewSection: some View {
+        Section(header: Text("Preview")) {
+            TransactionsCardView(transactions: .init(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour))
+        }
+    }
+    
+    // Transaction Details Section
+    private var transactionDetailsSection: some View {
+        Section(header: Text("Transaction Details").foregroundColor(.secondary)) {
+            categoryPicker
+            remarksTextField
+            amountField
+            datePicker
+        }
+    }
+    
+    // Classification Picker Section
+    private var classificationPickerSection: some View {
+        Section {
+            ClassificationPicker(classification: $classification)
+        }
+    }
+    
+    // Action Buttons Section
+    private var actionButtonsSection: some View {
+        Section {
+            Button("Save", action: saveTransaction)
+            if editTransaction != nil {
+                Button("Delete", role: .destructive, action: deleteTransaction)
+            }
+        }
+    }
+    
+    // Category Picker
+    private var categoryPicker: some View {
+        Picker("Category", selection: $selectedType) {
+            ForEach(TransactionTypes.allCases, id: \.self) { type in
+                HStack {
+                    type.transactionIcon
+                    Text(type.rawValue)
+                }
+                .tag(type)
+            }
+        }
+        .pickerStyle(.automatic)
+        .onChange(of: selectedType) { newValue in
+            title = newValue.rawValue
+        }
+    }
+    
+    // Remarks TextField
+    private var remarksTextField: some View {
+        TextField("Description", text: $remarks)
+    }
+    
+    // Amount Field
+    private var amountField: some View {
+        HStack {
+            Text("$").foregroundColor(.secondary)
+            TextField("Amount", value: $amount, formatter: numberFormatter)
+                .keyboardType(.decimalPad)
+        }
+    }
+    
+    // Date Picker
+    private var datePicker: some View {
+        DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
+    }
+    
+    // Load Transaction Data
+    private func loadTransaction() {
         if let editTransaction = editTransaction {
-            // Load existing data
             selectedType = TransactionTypes(rawValue: editTransaction.title) ?? .food
             title = editTransaction.title
             remarks = editTransaction.remarks
@@ -87,16 +117,14 @@ struct AddTransactionView: View {
         }
     }
     
-    // Saves new or updates existing transaction to CoreData.
-    func saveTransaction() {
-        //Save transaction to SwiftData
+    // Save Transaction
+    private func saveTransaction() {
         if let editTransaction = editTransaction {
             editTransaction.title = title
             editTransaction.remarks = remarks
             editTransaction.amount = amount
             editTransaction.classification = classification.rawValue
             editTransaction.dateAdded = dateAdded
-            
         } else {
             let transaction = Transactions(title: title, remarks: remarks, amount: amount, dateAdded: dateAdded, classification: classification, assignColour: assignColour)
             context.insert(transaction)
@@ -104,18 +132,18 @@ struct AddTransactionView: View {
         dismiss()
     }
     
-    // Deletes current transaction
-    func deleteTransaction() {
+    // Delete Transaction
+    private func deleteTransaction() {
         if let editTransaction = editTransaction {
             context.delete(editTransaction)
             dismiss()
         }
     }
-
-    // Picker view for selecting transaction classification. (Income / Expense)
-    struct ClassificationPicker: View {
+    
+    // Classification Picker Component
+    private struct ClassificationPicker: View {
         @Binding var classification: Classification
-
+        
         var body: some View {
             Picker("Classification", selection: $classification) {
                 ForEach(Classification.allCases, id: \.self) { classification in
@@ -126,17 +154,16 @@ struct AddTransactionView: View {
         }
     }
     
-    // Formatter for amount input. Only allow 2 decimal places.
-    var numberFormatter: NumberFormatter {
+    // Number Formatter for Amount Input
+    private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
-        
         return formatter
     }
 }
 
-// Extension to provides icons from transaction types.
+// Extension to provide icons for transaction types
 extension TransactionTypes {
     @ViewBuilder
     var transactionIcon: some View {
@@ -148,7 +175,7 @@ extension TransactionTypes {
         case .transport:
             Image(systemName: "car")
         case .entertainment:
-            Image(systemName: "movieclapper")
+            Image(systemName: "film")
         case .salary:
             Image(systemName: "dollarsign.square.fill")
         case .other:
@@ -158,7 +185,7 @@ extension TransactionTypes {
 }
 
 #Preview {
-    NavigationStack{
+    NavigationStack {
         AddTransactionView()
     }
 }

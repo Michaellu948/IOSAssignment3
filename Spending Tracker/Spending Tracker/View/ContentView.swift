@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  Spending Tracker
 //
-//  Created by Michael Lu on 6/5/2024.
+//  Created by Michael Lu on 2/5/2024.
 //
 
 import SwiftUI
