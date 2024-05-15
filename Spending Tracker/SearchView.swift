@@ -16,12 +16,14 @@ struct SearchView: View {
     @State private var isEditingTransaction = false
     @State private var transactionToEdit: Transactions?
     
+    // Publisher for debouncing search input
     private let searchPublisher = PassthroughSubject<String, Never>()
     
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack {
+                    // Filtered list of transactions
                     FilterTransactionView(
                         classification: selectedClassification,
                         searchText: filterTxt,
@@ -47,6 +49,7 @@ struct SearchView: View {
         }
     }
     
+    // Function to generate the list of transactions
     @ViewBuilder
     private func transactionsList(transactions: [Transactions]) -> some View {
         ForEach(transactions) { transaction in
@@ -58,6 +61,7 @@ struct SearchView: View {
         }
     }
     
+    // Navigation link to AddTransactionView when editing a transaction
     private var navigationLink: some View {
         NavigationLink(
             destination: AddTransactionView(editTransaction: transactionToEdit),
@@ -67,12 +71,14 @@ struct SearchView: View {
         }
     }
     
+    // Handle changes in the search text
     private func handleSearchTextChange(_ newText: String) {
         filterTxt = newText.isEmpty ? "" : newText
         searchPublisher.send(newText)
     }
 }
 
+// Button view for each transaction in the list
 private struct TransactionButton: View {
     let transaction: Transactions
     @Binding var isEditingTransaction: Bool
@@ -89,12 +95,16 @@ private struct TransactionButton: View {
     }
 }
 
+// Toolbar for filtering transactions
 private struct ToolBarContent: View {
     @Binding var selectedClassification: Classification?
     
     var body: some View {
         Menu {
+            // Filter button for "Both" classifications
             filterButton(title: "Both", classification: nil)
+            
+            // Filter buttons for each classification (income / expense)
             ForEach(Classification.allCases, id: \.rawValue) { classification in
                 filterButton(title: classification.rawValue, classification: classification)
             }

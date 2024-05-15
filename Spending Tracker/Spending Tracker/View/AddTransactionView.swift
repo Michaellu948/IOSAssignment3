@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct AddTransactionView: View {
-    @Environment(\.modelContext) private var context
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context // Access to the CoreData managed object context.
+    @Environment(\.dismiss) private var dismiss // Dismissal handler for closing the view.
     var editTransaction: Transactions?
     
     @State private var selectedType: TransactionTypes = .food
@@ -22,9 +22,13 @@ struct AddTransactionView: View {
     var body: some View {
         NavigationView {
             Form {
+                // Section to display a preview of the transaction card
                 previewSection
+                // Section for entering transaction details
                 transactionDetailsSection
+                // Section for selecting classification (Income / Expense)
                 classificationPickerSection
+                // Section for Save and Delete buttons
                 actionButtonsSection
             }
             .navigationBarTitle("\(editTransaction == nil ? "Add" : "Edit") Transaction", displayMode: .inline)
@@ -79,16 +83,16 @@ struct AddTransactionView: View {
         }
         .pickerStyle(.automatic)
         .onChange(of: selectedType) { newValue in
-            title = newValue.rawValue
+            title = newValue.rawValue // Update title when category changes
         }
     }
     
-    // Remarks TextField
+    // TextField for entering transaction remarks
     private var remarksTextField: some View {
         TextField("Description", text: $remarks)
     }
     
-    // Amount Field
+    // TextField for entering transaction amount
     private var amountField: some View {
         HStack {
             Text("$").foregroundColor(.secondary)
@@ -97,12 +101,12 @@ struct AddTransactionView: View {
         }
     }
     
-    // Date Picker
+    // DatePicker for selecting transaction date
     private var datePicker: some View {
         DatePicker("Date", selection: $dateAdded, displayedComponents: .date)
     }
     
-    // Load Transaction Data
+    // Load existing transaction data if editing
     private func loadTransaction() {
         if let editTransaction = editTransaction {
             selectedType = TransactionTypes(rawValue: editTransaction.title) ?? .food
@@ -117,7 +121,7 @@ struct AddTransactionView: View {
         }
     }
     
-    // Save Transaction
+    // Save new or update existing transaction
     private func saveTransaction() {
         if let editTransaction = editTransaction {
             editTransaction.title = title
@@ -132,7 +136,7 @@ struct AddTransactionView: View {
         dismiss()
     }
     
-    // Delete Transaction
+    // Delete existing Transaction
     private func deleteTransaction() {
         if let editTransaction = editTransaction {
             context.delete(editTransaction)
@@ -154,7 +158,7 @@ struct AddTransactionView: View {
         }
     }
     
-    // Number Formatter for Amount Input
+    // Formatter for amount input, allowing only 2 decimal places
     private var numberFormatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

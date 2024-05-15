@@ -10,37 +10,46 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedClassification: Classification = .expense
+    // Query to sort transactions by date added in descending order
     @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)]) private var transactions: [Transactions]
     
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
                 LazyVStack(pinnedViews: [.sectionHeaders]) {
+                    // Section to display totals and filtered transactions
                     transactionsSection
                 }
                 .padding(10)
             }
             .background(Color.gray.opacity(0.15))
             .navigationDestination(for: Transactions.self) { transaction in
+                // Navigate to AddTransactionView when a transaction is selected
                 AddTransactionView(editTransaction: transaction)
             }
         }
     }
     
+    // Section view containing totals, classification picker, and transactions list
     private var transactionsSection: some View {
         Section {
+            // View to display total income and expense
             TotalsCardView(transactions: transactions)
             
+            // Picker to select between income and expense
             ClassificationPicker(selectedClassification: $selectedClassification)
                 .padding(.bottom, 10)
             
+            // List of transactions filtered by selected classification
             TransactionsList(transactions: transactions, selectedClassification: $selectedClassification)
         } header: {
+            // Header view with welcome message and add transaction button
             HeaderView()
         }
     }
 }
 
+// View to display total income and expense in a card
 private struct TotalsCardView: View {
     let transactions: [Transactions]
     
@@ -50,6 +59,7 @@ private struct TotalsCardView: View {
     }
 }
 
+// Picker view to select between income and expense classifications
 private struct ClassificationPicker: View {
     @Binding var selectedClassification: Classification
     
@@ -65,6 +75,7 @@ private struct ClassificationPicker: View {
     }
 }
 
+// List of transactions filtered by the selected classification
 private struct TransactionsList: View {
     let transactions: [Transactions]
     @Binding var selectedClassification: Classification
