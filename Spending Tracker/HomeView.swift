@@ -10,53 +10,82 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedClassification: Classification = .expense
-    // Query to sort transactions by date made
     @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)]) private var transactions: [Transactions]
     
     var body: some View {
-        GeometryReader {
-            let size = $0.size
-            
-            NavigationStack {
-                ScrollView(.vertical) {
-                    LazyVStack(pinnedViews: [.sectionHeaders]) {
-                        Section {
-                            // Displays total income/expense
-                            CardView(income: total(transactions, classification: .income),
-                                     expense: total(transactions, classification: .expense))
-                            
-                            CustomSegmentedControl()
-                                .padding(.bottom, 10)
-                            
-                            // Display individual transactions based on if its income or expense
-                            ForEach(transactions.filter({$0.classification == selectedClassification.rawValue})) {transaction in
-                                NavigationLink(value: transaction) {
-                                    TransactionsCardView(transactions: transaction)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        } header: {
-                            HeaderView(size)
-                        }
-                    }
-                    .padding(10)
+        NavigationStack {
+            ScrollView(.vertical) {
+                LazyVStack(pinnedViews: [.sectionHeaders]) {
+                    transactionsSection
                 }
-                .background(.gray.opacity(0.15))
-                .navigationDestination(for: Transactions.self) {transaction in
-                    AddTransactionView(editTransaction: transaction)
-                }
+                .padding(10)
+            }
+            .background(Color.gray.opacity(0.15))
+            .navigationDestination(for: Transactions.self) { transaction in
+                AddTransactionView(editTransaction: transaction)
             }
         }
     }
     
-    // Header view that contains a welcome message and an add transaction button
-    @ViewBuilder
-    func HeaderView(_ size: CGSize) -> some View {
-        HStack() {
-            VStack(alignment: .leading, spacing: 5, content: {
+    private var transactionsSection: some View {
+        Section {
+            TotalsCardView(transactions: transactions)
+            
+            ClassificationPicker(selectedClassification: $selectedClassification)
+                .padding(.bottom, 10)
+            
+            TransactionsList(transactions: transactions, selectedClassification: $selectedClassification)
+        } header: {
+            HeaderView()
+        }
+    }
+}
+
+private struct TotalsCardView: View {
+    let transactions: [Transactions]
+    
+    var body: some View {
+        CardView(income: total(transactions, classification: .income),
+                 expense: total(transactions, classification: .expense))
+    }
+}
+
+private struct ClassificationPicker: View {
+    @Binding var selectedClassification: Classification
+    
+    var body: some View {
+        Picker("Classification", selection: $selectedClassification) {
+            ForEach(Classification.allCases, id: \.self) { classification in
+                Text(classification.rawValue)
+                    .tag(classification)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .padding(.top, 5)
+    }
+}
+
+private struct TransactionsList: View {
+    let transactions: [Transactions]
+    @Binding var selectedClassification: Classification
+    
+    var body: some View {
+        ForEach(transactions.filter { $0.classification == selectedClassification.rawValue }) { transaction in
+            NavigationLink(value: transaction) {
+                TransactionsCardView(transactions: transaction)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+}
+
+private struct HeaderView: View {
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
                 Text("Welcome!")
                     .font(.title.bold())
-            })
+            }
             Spacer()
             NavigationLink {
                 AddTransactionView()
@@ -74,26 +103,13 @@ struct HomeView: View {
             }
         }
         .background {
-            VStack() {
+            VStack {
                 Rectangle()
                     .fill(.ultraThinMaterial)
             }
-            .padding(.top, -(safeArea.top + 10))
+            .padding(.top, -(UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0))
             .padding(.horizontal, -10)
         }
-    }
-    
-    // Creates a segmented control for filtering transactions by income/expense
-    @ViewBuilder
-    func CustomSegmentedControl() -> some View {
-        Picker("Classification", selection: $selectedClassification) {
-            ForEach(Classification.allCases, id: \.self) {classification in
-                Text(classification.rawValue)
-                    .tag(classification)
-            }
-        }
-        .pickerStyle(SegmentedPickerStyle())
-        .padding(.top, 5)
     }
 }
 
