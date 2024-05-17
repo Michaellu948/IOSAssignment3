@@ -13,13 +13,14 @@ struct AssignColour: Identifiable {
     var value: Color
 }
 
+// colour setting
 var colours: [AssignColour] = [
-    .init(colours: "Blue", value: .blue),
-    .init(colours: "Green", value: .green),
-    .init(colours: "Pink", value: .pink),
     .init(colours: "Red", value: .red),
     .init(colours: "Orange", value: .orange),
+    .init(colours: "Yellow", value: .yellow),
+    .init(colours: "Green", value: .green),
+    .init(colours: "Blue", value: .blue),
     .init(colours: "Indigo", value: .indigo),
-    .init(colours: "Purple", value: .purple)
+    .init(colours: "Purple", value: .purple),
+    .init(colours: "Pink", value: .pink)
 ]
-

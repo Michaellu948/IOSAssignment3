@@ -2,151 +2,125 @@
 //  HomeView.swift
 //  Spending Tracker
 //
-//  Created by Michael Lu on 6/5/2024.
+//  Created by Michael Lu on 2/5/2024.
 //
 
 import SwiftUI
 import SwiftData
 
 struct HomeView: View {
-    @AppStorage("userName") private var userName: String = ""
-    @State private var startDate: Date = .now.startOfMonth
-    @State private var endDate: Date = .now.endOfMonth
-    @State private var selectedCategory: Classification = .expense
-    @Namespace private var animation
-
+    @State private var selectedClassification: Classification = .expense
+    // Query to sort transactions by date added in descending order
+    @Query(sort: [SortDescriptor(\Transactions.dateAdded, order: .reverse)]) private var transactions: [Transactions]
+    
     var body: some View {
-        GeometryReader {
-            let size = $0.size
-            
-            NavigationStack {
-                ScrollView(.vertical) {
-                    LazyVStack(spacing:10, pinnedViews: [.sectionHeaders]) {
-                        Section {
-                            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                                Text("\(format(date: startDate, format: "dd - MMM yy")) to \(format(date: startDate, format: "dd - MMM yy"))")
-                                    .font(.caption2)
-                                    .foregroundStyle(.gray)
-                            })
-                            .hSpacing(.leading)
-                            
-                            FilterTransactionView(startDate: startDate, endDate: endDate){ transactions in
-                                CardView(income: total(transactions, classification: .income),
-                                         expense: total(transactions, classification: .expense))
-                                
-                                CustomSegmentedControl()
-                                    .padding(.bottom, 10)
-                                
-                                ForEach(transactions.filter({ $0.classification == selectedCategory.rawValue})) { transaction in
-                                    NavigationLink{
-                                        AddTransactionView(editTransaction: transaction)
-                                    }label: {
-                                        TransactionsCardView(transactions: transaction)
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
-                            
-
-                        } header: {
-                            HeaderView(size)
-                        }
-                    }
-                    .padding(15)
+        NavigationStack {
+            ScrollView(.vertical) {
+                LazyVStack(pinnedViews: [.sectionHeaders]) {
+                    // Section to display totals and filtered transactions
+                    transactionsSection
                 }
-                .background(.gray.opacity(0.15))
-                .navigationDestination(for: Transactions.self) { transaction in
-                    TransactionsCardView(transactions: transaction)
-                }
-
+                .padding(10)
+            }
+            .background(Color.gray.opacity(0.15))
+            .navigationDestination(for: Transactions.self) { transaction in
+                // Navigate to AddTransactionView when a transaction is selected
+                AddTransactionView(editTransaction: transaction)
             }
         }
     }
-    @ViewBuilder
-    func HeaderView(_ size: CGSize) -> some View {
-        HStack(spacing: 10) {
-            VStack(alignment: .leading, spacing: 5, content: {
+    
+    // Section view containing totals, classification picker, and transactions list
+    private var transactionsSection: some View {
+        Section {
+            // View to display total income and expense
+            TotalsCardView(transactions: transactions)
+            
+            // Picker to select between income and expense
+            ClassificationPicker(selectedClassification: $selectedClassification)
+                .padding(.bottom, 10)
+            
+            // List of transactions filtered by selected classification
+            TransactionsList(transactions: transactions, selectedClassification: $selectedClassification)
+        } header: {
+            // Header view with welcome message and add transaction button
+            HeaderView()
+        }
+    }
+}
+
+// View to display total income and expense in a card
+private struct TotalsCardView: View {
+    let transactions: [Transactions]
+    
+    var body: some View {
+        CardView(income: total(transactions, classification: .income),
+                 expense: total(transactions, classification: .expense))
+    }
+}
+
+// Picker view to select between income and expense classifications
+private struct ClassificationPicker: View {
+    @Binding var selectedClassification: Classification
+    
+    var body: some View {
+        Picker("Classification", selection: $selectedClassification) {
+            ForEach(Classification.allCases, id: \.self) { classification in
+                Text(classification.rawValue)
+                    .tag(classification)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+        .padding(.top, 5)
+    }
+}
+
+// List of transactions filtered by the selected classification
+private struct TransactionsList: View {
+    let transactions: [Transactions]
+    @Binding var selectedClassification: Classification
+    
+    var body: some View {
+        ForEach(transactions.filter { $0.classification == selectedClassification.rawValue }) { transaction in
+            NavigationLink(value: transaction) {
+                TransactionsCardView(transactions: transaction)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+}
+
+private struct HeaderView: View {
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
                 Text("Welcome!")
                     .font(.title.bold())
-                
-                if !userName.isEmpty {
-                    Text(userName)
-                        .font(.callout)
-                        .foregroundStyle(.gray)
-                }
-            })
-            .visualEffect { content, geometryProxy in
-                content.scaleEffect(headerScale(size, proxy: geometryProxy), anchor: .topLeading)
             }
-            Spacer(minLength: 0)
+            Spacer()
             NavigationLink {
                 AddTransactionView()
             } label: {
-                Image(systemName: "plus")
+                Text("Add Transaction")
                     .font(.title3)
-                    .fontWeight(.semibold)
                     .foregroundColor(.white)
-                    .frame(width: 45, height: 45)
-                    .background(.blue.gradient, in: .circle)
-                    .contentShape(.circle)
+                    .fontWeight(.semibold)
+                    .frame(width: 150, height: 40)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 5)
+                    .background(Color.green)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(radius: 5)
             }
-
         }
-        .padding(.bottom, userName.isEmpty ? 10 : 5)
         .background {
-            VStack(spacing: 0) {
+            VStack {
                 Rectangle()
                     .fill(.ultraThinMaterial)
-                
-                Divider()
-                    .visualEffect { content, geometryProxy in
-                        content
-                            .opacity(headerBGOpacity(geometryProxy))
-                    }
             }
-            .padding(.horizontal, -15)
-            .padding(.top, -(safeArea.top + 15))
+            .padding(.top, -(UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0))
+            .padding(.horizontal, -10)
         }
-    }
-    
-    @ViewBuilder
-    func CustomSegmentedControl() -> some View {
-        HStack(spacing: 0) {
-            ForEach(Classification.allCases, id: \.rawValue) { classification in
-                Text(classification.rawValue)
-                    .hSpacing()
-                    .padding(.vertical, 10)
-                    .background {
-                        if classification == selectedCategory {
-                            Capsule()
-                                .fill(.background)
-                                .matchedGeometryEffect(id: "CURRENTTAB", in: animation)
-                        }
-                    }
-                    .contentShape(.capsule)
-                    .onTapGesture {
-                        withAnimation(.snappy) {
-                            selectedCategory = classification
-                        }
-                    }
-            }
-        }
-        .background(.gray.opacity(0.15), in: .capsule)
-        .padding(.top, 5)
-    }
-    
-    func headerBGOpacity(_ proxy: GeometryProxy) -> CGFloat {
-        let minY = proxy.frame(in: .scrollView).minY + safeArea.top
-        return minY > 0 ? 0 : (-minY / 15)
-    }
-    
-    func headerScale(_ size: CGSize, proxy: GeometryProxy) -> CGFloat {
-        let minY = proxy.frame(in: .scrollView).minY
-        let screenHeight = size.height
-        
-        let progress = minY / screenHeight
-        let scale = (min(max(progress, 0), 1)) * 0.6
-        return 1 + scale
     }
 }
 

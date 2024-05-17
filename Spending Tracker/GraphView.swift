@@ -1,119 +1,155 @@
 //
-//  Classification.swift
+//  GraphView.swift
 //  Spending Tracker
 //
-//  Created by Donghyeop Lee on 8/5/2024.
+//  Created by Donghyeop Lee on 9/5/2024.
 //
-
-
 import SwiftUI
-import Charts
 import SwiftData
 
-struct GraphsViews : View{
+struct GraphView: View {
     @Query(animation: .snappy) private var transactions: [Transactions]
-    @State private var chartModel: [ChartModel] = []
-    var body: some View{
-        ScrollView(.vertical){
-            LazyVStack(spacing: 10){
 
-                .chartScrollableAxes(.horizontal) 
-                .chartXVisibleDomain(length: 4)
-                .chartLegend(position: .bottom, alignment: .trailing)
-                .chartYAxis{
-                    AxisMarks(position: .leading){ value in
-                        let doubleValue = value.as(Double.self) ?? 0
-                        
-                        AxisGridLine()
-                        AxisTick()
-                        AxisValueLabel{
-                            Text(axisLabel(doubleValue))
-                        } 
-                    }
-                }
-
-                .chartForegroundStlyeScale(range: [Color.green.gradient, Color.red.gradient ])
-
-
-            }
-            .onAppear  {
-                task.detached(priority: .high){
-                    let calander = Calendar.current
-
-                    let groundByDate = Dictionary(grouping: transactions) { transaction in
-                        let components = calander.DateComponents([.month, .year], from: transaction.dateAdded)
-
-                        return components
-                    }
-
-                    let sortedGroups = groupedByDate.sorted{
-                        let date1 = calander.date{from: $0.key} ?? .init()       
-                        let date2 = calander.date{from: $1.key} ?? .init()       
-
-                        return calander.compare(date1, to: date2, toGranularity: .day) == .orderedDecending
-                    }
-
-                    let charts = sortedGroups.compactMap { dict -> Charts? in
-                        let date = calander.date(from: dict.key)
-                        let income = dict.value.filter({ $0.classification == Classification.income.rawValue})
-                        let expense = dict.value.filter({ $0.classification == Classification.expense.rawValue})
-
-                        let incomeTotalValue = total(income, Classification: .income)
-                        let expenseTotalValue = total(expense, Classification: .expense)
-
-                        return .init{
-                            date: date,
-                            classifications: [
-                                .init(totalValue: incomeTotalValue, Classification:.income)
-                                .init(totalValue: expenseTotalValue, Classification:.expense)
-                            ],
-                            totalIncome: incomeTotalValue,
-                            totalExpense: expenseTotalValue
-                        }
-                    } 
-
-                }
-
-            }
-            func axisLabel( value: Double) -> String {
-                let intValue = int(value)
-                let kValue = int(value / 1000)    
-                return intValue < 1000 ? "\(kValue)K" : "\(kValue)K"
-            }
-
-        }   
+    private var expenseTransactions: [Transactions] {
+        // check only expense values
+        transactions.filter {$0.classification == Classification.expense.rawValue}
     }
-    @viewBuilder
-    func ChartView() -> some View{
-        
-        Charts{
-            forEach(CategoryForChart) { group in
-                forEach(group.classification) { chart
-                    barMark(
-                        x: .value("Month", format(date: group.date, format: "MMM yy")),
-                        y: .value(chart.classification.rawValue, chart.totalValue),
-                        width: 20
-                    )
-                
-                        
-                    .position(by: .value("classification", chart.classification.rawValue), axis: .horizontal)
-                    .foregroundStyle(by: .value("classification", chart.classification.rawValue) )
+    
+    private var mostExpensiveTransaction: Transactions? {
+        // check the highest value
+        expenseTransactions.max(by: {$0.amount < $1.amount})
+    }
+    
+    // set category colour
+    private let categoryColors: [String: Color] = [
+        "Food": .red,
+        "Groceries": .green,
+        "Transport": .blue,
+        "Entertainment": .orange,
+        "Others": .gray
+    ]
+    
+    var body: some View {
+        VStack {
+            Text("Expenses Overview")
+                .font(.title)
+                .padding()
+            
+            GeometryReader {geometry in
+                createPieChart(geometry: geometry)
+                legendView()
+                    .padding(.top, 20)
+            }
+            .frame(height: 480)
+            .padding()
+            // set highest value
+            if let mostExpensive = mostExpensiveTransaction {
+                VStack { // show highest expense on screen
+                    Text("Your highest expense is on ")
+                    + Text("\(mostExpensive.title)")
+                        .bold()
+                        .foregroundColor(.red)
+                    + Text(". Try to manage this category better next time.")
+                }
+                .font(.headline)
+                .multilineTextAlignment(.center)
+                .padding()
+            }
+        }
+    }
+    
+    private func createPieChart(geometry: GeometryProxy) -> some View {
+        // make pie chart with category
+        let width = min(geometry.size.width, geometry.size.height)
+        let center = CGPoint(x: geometry.size.width / 2, y: geometry.size.height / 2)
+        let radius = width / 3
+        let expenses = aggregateExpensesByTitle()
+        let totalAmount = expenses.values.reduce(0, +)
 
+        return ZStack {
+            ForEach(Array(expenses.keys.enumerated()), id: \.element) {index, title in
+                //following colour from category selected one
+                if let color = categoryColors[title], let amount = expenses[title] {
+                    let startAngle = index == 0 ? -CGFloat.pi / 2 : cumulativeAngles(for: expenses, totalAmount: totalAmount)[index - 1].end
+                    let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
+                    PieSliceView(color: color, title: title, startAngle: startAngle, endAngle: endAngle, center: center, radius: radius)
                 }
             }
-                    
-        }   
+        }
+    }
+
+    private func legendView() -> some View {
+        // legend view
+        VStack(alignment: .leading) {
+            ForEach(Array(categoryColors.keys.sorted()), id: \.self) {title in
+                if let color = categoryColors[title] {
+                    LegendView(color: color, text: title)
+                }
+            }
+        }
+    }
+    
+    private func aggregateExpensesByTitle() -> [String: Double] {
+        //add all expenses on same category
+        var aggregatedExpenses: [String: Double] = [:]
+        for transaction in expenseTransactions {
+            let title = transaction.title
+            aggregatedExpenses[title, default: 0] += transaction.amount
+        }
+        return aggregatedExpenses
+    }
+
+    private func cumulativeAngles(for expenses: [String: Double], totalAmount: Double) -> [(start: CGFloat, end: CGFloat)] {
+        //check angles
+        var angles = [(start: CGFloat, end: CGFloat)]()
+        var startAngle = -CGFloat.pi / 2 //angle start part
+        for (index, _) in expenses.keys.enumerated() {
+            let amount = expenses[Array(expenses.keys)[index]] ?? 0
+            let endAngle = startAngle + 2 * .pi * CGFloat(amount / totalAmount)
+            angles.append((start: startAngle, end: endAngle))
+            startAngle = endAngle
+        }
+        return angles
     }
 }
 
+struct LegendView: View {
+    var color: Color
+    var text: String
+    // show colour and what category it is
+    var body: some View {
+        HStack {
+            Rectangle()
+                .fill(color)
+                .frame(width: 20, height: 20)
+                .cornerRadius(5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.white, lineWidth: 1)
+                )
+            Text(text)
+                .font(.caption)
+        }
+    }
+}
+
+struct PieSliceView: View {
+    var color: Color
+    var title: String
+    var startAngle: CGFloat
+    var endAngle: CGFloat
+    var center: CGPoint
+    var radius: CGFloat
+
+    var body: some View {
+        Path {path in
+            path.move(to: center)
+            path.addArc(center: center, radius: radius, startAngle: Angle(radians: Double(startAngle)), endAngle: Angle(radians: Double(endAngle)), clockwise: false)
+        }
+        .fill(color)
+    }
+}
 
 #Preview{
-    GraphsViews()
+    GraphView()
 }
-
-
-
-
-
-
-

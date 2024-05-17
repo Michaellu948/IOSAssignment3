@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @AppStorage("userName") private var userName: String = ""
+    @EnvironmentObject var themeHandler: ThemeHandler // Access to the theme handler which manages dark mode settings.
     
     var body: some View {
         NavigationStack{
             List{
-                Section("Username"){
-                    TextField("Enter your username", text: $userName)
+                Section(header: Text("Appearance")) {
+                    Toggle(isOn: $themeHandler.isDarkModeEnabled) { // Toggle switch for dark mode
+                        Text("Dark Mode")
+                    }
                 }
+                .navigationTitle("Settings")
             }
-            .navigationTitle("Settings")
+            .preferredColorScheme(themeHandler.isDarkModeEnabled ? .dark : .light) // Dynamically sets the color scheme based on the dark mode setting.
         }
     }
 }
