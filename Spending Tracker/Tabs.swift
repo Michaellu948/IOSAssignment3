@@ -10,7 +10,7 @@ import SwiftUI
 enum Tabs: String {
     case home = "Home"
     case search = "Search"
-    case graph = "Graph"
+    case trends = "Trends"
     case settings = "Settings"
     
     @ViewBuilder
@@ -20,13 +20,13 @@ enum Tabs: String {
             Image(systemName: "house")
             Text(self.rawValue)
         case .search:
-            Image(systemName: "doc.text.magnifyingglass")
+            Image(systemName: "magnifyingglass")
             Text(self.rawValue)
-        case .graph:
-            Image(systemName: "chart.pie")
+        case .trends:
+            Image(systemName: "chart.bar.xaxis")
             Text(self.rawValue)
         case .settings:
-            Image(systemName: "gear")
+            Image(systemName: "gearshape")
             Text(self.rawValue)
         }
     }
