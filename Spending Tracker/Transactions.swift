@@ -17,7 +17,7 @@ class Transactions{
     var classification: String
     var assignColour: String
 
-    // transactions basic init paramater
+    
     init(title: String, remarks: String, amount: Double, dateAdded: Date, classification: Classification, assignColour: AssignColour) {
         self.title = title
         self.remarks = remarks
@@ -28,17 +28,16 @@ class Transactions{
     }
     
     var colour: Color {
-        return colours.first(where: {$0.colours == assignColour})?.value ?? Color.blue
+        return colours.first(where: {$0.colours == assignColour})?.value ?? appTint
     }
     
-    var assignCol: AssignColour? {
-        return colours.first(where: {$0.colours == assignColour})
+    var assignCol: AssignColour?{
+        return colours.first(where: { $0.colours == assignColour})
     }
     
     var newClassification: Classification? {
         return Classification.allCases.first(where: {classification == $0.rawValue})
     }
-    
 }
 
 

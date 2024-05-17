@@ -9,11 +9,9 @@ import SwiftUI
 
 @main
 struct Spending_TrackerApp: App {
-    var themeHandler = ThemeHandler()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(themeHandler)
         }
         .modelContainer(for: [Transactions.self])
     }
