@@ -1,5 +1,5 @@
 //
-//  Views+Extensions.swift
+//  Extensions.swift
 //  Spending Tracker
 //
 //  Created by Michael Lu on 6/5/2024.
@@ -14,20 +14,14 @@ extension View {
             .frame(maxWidth: .infinity, alignment: alignment)
     }
     
-    @ViewBuilder
-    func vSpacing(_ alignment: Alignment = .center) -> some View {
-        self
-            .frame(maxHeight: .infinity, alignment: alignment)
-    }
-    
     var safeArea: UIEdgeInsets {
         if let windowScene = (UIApplication.shared.connectedScenes.first as? UIWindowScene) {
             return windowScene.keyWindow?.safeAreaInsets ?? .zero
         }
-        
         return .zero
     }
     
+    //date format
     func format(date: Date, format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
@@ -42,6 +36,7 @@ extension View {
         return formatter.string(from: .init(value: value)) ?? ""
     }
     
+    // total value of expense and income
     func total(_ transactions: [Transactions], classification: Classification) -> Double {
         return transactions.filter({ $0.classification == classification.rawValue }).reduce(Double.zero) { partialResult , transaction in
             return partialResult + transaction.amount
